@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         button_take_img = (Button) findViewById(R.id.button);
-        inputHandler ih = new inputHandler();
+        inputHandler ih = new inputHandler(this);
         ih.getImg();
     }
 
