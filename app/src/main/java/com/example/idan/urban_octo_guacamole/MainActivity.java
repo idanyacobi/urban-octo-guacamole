@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
         button_take_img = (Button) findViewById(R.id.button);
 //        dispatchTakePictureIntent();
+        inputHandler input_obj = new inputHandler("Frupupu");
     }
 
     static final int REQUEST_IMAGE_CAPTURE = 1;

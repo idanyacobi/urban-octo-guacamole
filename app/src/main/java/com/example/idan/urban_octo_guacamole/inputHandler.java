@@ -5,5 +5,7 @@ public class inputHandler {
 
     public inputHandler(String nir) {
         this.nir = nir;
+        System.out.println("niro is " + this.nir);
     }
+
 }
