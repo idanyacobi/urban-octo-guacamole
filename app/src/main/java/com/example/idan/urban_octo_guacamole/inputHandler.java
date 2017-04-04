@@ -1,12 +1,15 @@
 package com.example.idan.urban_octo_guacamole;
 
-public class inputHandler {
-    String nir;
+import android.provider.Settings;
 
-    public inputHandler(String nir) {
-        // BLA
-        this.nir = nir;
-        System.out.println("niro is " + this.nir);
+import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
+
+class inputHandler {
+    String IMG_PATH = "/data/girl1.png";
+
+    void getImg() {
+        Mat m = Imgcodecs.imread(IMG_PATH);
+        System.out.println(m);
     }
-
 }
