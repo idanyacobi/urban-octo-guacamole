@@ -5,11 +5,28 @@ import android.graphics.Bitmap;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.opencv.android.OpenCVLoader;
+
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
+
+    static {
+        if (!OpenCVLoader.initDebug()) {
+            Log.d(TAG, "open cv not loaded");
+        }
+        else {
+            Log.d(TAG, "open cv loaded");
+        }
+    }
 
     Button button_take_img;
 
@@ -19,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         button_take_img = (Button) findViewById(R.id.button);
-//        dispatchTakePictureIntent();
-        inputHandler input_obj = new inputHandler("Frupupu");
     }
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
