@@ -7,3 +7,5 @@
 /captures
 .externalNativeBuild
 /app/src/main/jniLibs
+/app/data/
+/settings.gradle
