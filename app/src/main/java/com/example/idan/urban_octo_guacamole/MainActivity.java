@@ -63,9 +63,10 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         javaCameraView = (JavaCameraView)findViewById(R.id.java_camera_view);
         javaCameraView.setVisibility(SurfaceView.VISIBLE);
         javaCameraView.setCvCameraViewListener(this);
-//        button_take_img = (Button) findViewById(R.id.button);
 
-        button_take_img = (Button) findViewById(R.id.button);
+        // take a picture button
+        // button_take_img = (Button) findViewById(R.id.button);
+
         inputHandler ih = new inputHandler(this);
         ih.getImg();
     }

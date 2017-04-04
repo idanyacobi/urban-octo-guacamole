@@ -19,7 +19,12 @@ class inputHandler {
 
     void getImg() {
         // TODO: read it directly to Mat
-        Bitmap bMap = BitmapFactory.decodeResource(context.getResources(),R.drawable.girl1);
+
+        // Image has been automatically resized because of high DPI of screen on device.
+        // To avoid this we had to set inScaled option to false:
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
+        Bitmap bMap = BitmapFactory.decodeResource(context.getResources(),R.drawable.girl1, options);
         Mat sourceImage = new Mat();
         Utils.bitmapToMat(bMap, sourceImage);
 
