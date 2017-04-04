@@ -68,7 +68,8 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         // button_take_img = (Button) findViewById(R.id.button);
 
         inputHandler ih = new inputHandler(this);
-        ih.getImg();
+        Mat img = ih.getImg();
+        ih.splitToPatches(img);
     }
 
 
