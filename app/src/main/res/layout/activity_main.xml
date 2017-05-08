@@ -1,31 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<!--<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:id="@+id/bla"-->
+    <!--tools:context="com.example.idan.urban_octo_guacamole.MainActivity">-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.idan.urban_octo_guacamole.MainActivity">
+    android:orientation="vertical"
+    android:layout_alignParentBottom="true">
 
+    <com.example.idan.urban_octo_guacamole.FaceOverlayView
+        android:id="@+id/face_overlay"
+        android:layout_width="175dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center_horizontal|center"/>
+
+    <ImageButton
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/camera"
+        android:layout_gravity="center_horizontal|center"
+        android:onClick="dispatchTakePictureIntent"/>
+
+    <ImageButton
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/gallery"
+        android:layout_gravity="center_horizontal|center"
+        android:onClick="pickImage"/>
+
+    <ImageButton
+        android:id="@+id/nextActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/arrow"
+        android:layout_gravity="center_horizontal|center"
+        android:onClick="nextActivity"/>
+
+</LinearLayout>
 
     <!--<Button-->
-        <!--android:id="@+id/button"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Button"-->
-        <!--android:onClick="dispatchTakePictureIntent"-->
-        <!--tools:layout_editor_absoluteX="154dp"-->
-        <!--tools:layout_editor_absoluteY="16dp" />-->
+    <!--android:id="@+id/button"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Button"-->
+    <!--android:onClick="dispatchTakePictureIntent"-->
+    <!--tools:layout_editor_absoluteX="154dp"-->
+    <!--tools:layout_editor_absoluteY="16dp" />-->
 
-    <!--<ImageView-->
-        <!--android:id="@+id/imageView"-->
-        <!--android:layout_width="225dp"-->
-        <!--android:layout_height="338dp"-->
-        <!--app:srcCompat="@color/colorPrimary"-->
-        <!--tools:layout_editor_absoluteX="66dp"-->
-        <!--tools:layout_editor_absoluteY="139dp" />-->
-    <org.opencv.android.JavaCameraView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/java_camera_view"
-        />
+<!--<?xml version="1.0" encoding="utf-8"?>-->
 
-</android.support.constraint.ConstraintLayout>
+
+    <!--<com.example.idan.urban_octo_guacamole.FaceOverlayView-->
+        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:id="@+id/face_overlay"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
+
+    <!--&lt;!&ndash;<org.opencv.android.JavaCameraView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/java_camera_view"&ndash;&gt;-->
+        <!--&lt;!&ndash;/>&ndash;&gt;-->
+
+
+
+    <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/imageView"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="225dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="338dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;app:srcCompat="@color/colorPrimary"&ndash;&gt;-->
+        <!--&lt;!&ndash;tools:layout_editor_absoluteX="66dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;tools:layout_editor_absoluteY="139dp" />&ndash;&gt;-->
+
+
+<!--</android.support.constraint.ConstraintLayout>-->

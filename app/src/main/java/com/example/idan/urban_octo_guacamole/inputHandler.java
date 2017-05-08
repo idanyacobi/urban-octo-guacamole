@@ -3,26 +3,39 @@ package com.example.idan.urban_octo_guacamole;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.provider.Settings;
 import android.util.Log;
-import android.view.SurfaceView;
-import android.widget.ImageView;
 
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfFloat;
 import org.opencv.core.MatOfPoint;
-import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.core.Rect;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.HOGDescriptor;
+
+import java.util.HashMap;
+import java.util.Vector;
 
 import static android.content.ContentValues.TAG;
 
 class inputHandler {
-    private final Context context;
-    String IMG_PATH = "drawable/girl1.png";
+    private static final int WIDTH_SIZE = 128;
+    private static final int HEIGHT_SIZE = 256;
+    private static final int WINDOW_SIZE = 16;
+    private static final int STEP_OVERLAP = 2;
+    private static final int IMG_DRAWABLE = R.drawable.girl1;
+    private static final int BLOCK_SIZE = 16;
+    private static final int CELL_SIZE = 8;
+    private static final int PADDING_SIZE = 0;
+    private static final int PATCH_SIZE = 32;
+    private static final int OVERLAP_SIZE = PATCH_SIZE / STEP_OVERLAP;
 
-    public inputHandler(Context current) {
+    private final Context context;
+
+    inputHandler(Context current) {
         this.context = current;
     }
 
@@ -34,7 +47,7 @@ class inputHandler {
         // To avoid this we had to set inScaled option to false:
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
-        Bitmap bMap = BitmapFactory.decodeResource(context.getResources(),R.drawable.girl1, options);
+        Bitmap bMap = BitmapFactory.decodeResource(context.getResources(), IMG_DRAWABLE, options);
         Mat sourceImage = new Mat(bMap.getWidth(), bMap.getHeight(), CvType.CV_8UC1);
         Utils.bitmapToMat(bMap, sourceImage);
 
@@ -42,40 +55,41 @@ class inputHandler {
     }
 
     void splitToPatches(Mat imgMat) {
-        // base on http://stackoverflow.com/questions/38233753/android-opencv-why-hog-descriptors-are-always-zero
-        Bitmap bm = Bitmap.createBitmap(imgMat.cols(), imgMat.rows(),Bitmap.Config.ARGB_8888);
-        Utils.matToBitmap(imgMat.clone(), bm);
-        // find the imageview and draw it!
-//        ImageView iv = (ImageView) getRootView().findViewById(R.id.imageView);
-//        this.setVisibility(SurfaceView.GONE);
-//        iv.setVisibility(ImageView.VISIBLE);
-
         Mat forHOGim = new Mat();
-        org.opencv.core.Size sz = new org.opencv.core.Size(64, 128);
+        Size sz = new Size(WIDTH_SIZE, HEIGHT_SIZE);
         Imgproc.resize(imgMat, imgMat, sz);
         Imgproc.cvtColor(imgMat, forHOGim, Imgproc.COLOR_RGB2GRAY);
 
-        MatOfFloat descriptors = new MatOfFloat(); //an empty vector of descriptors
-        org.opencv.core.Size winStride = new org.opencv.core.Size(64/2,128/2); //50% overlap in the sliding window
-        org.opencv.core.Size padding = new org.opencv.core.Size(0,0); //no padding around the image
+        // base on http://stackoverflow.com/questions/38233753/android-opencv-why-hog-descriptors-are-always-zero
+        Bitmap bm = Bitmap.createBitmap(imgMat.cols(), imgMat.rows(),Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(imgMat.clone(), bm);
+
+        MatOfFloat patch_descriptor = new MatOfFloat(); //an empty vector of descriptors
+        Size winSize = new Size(WINDOW_SIZE, WINDOW_SIZE);
+        Size blockSize = new Size(BLOCK_SIZE, BLOCK_SIZE);
+        Size cellSize = new Size(CELL_SIZE, CELL_SIZE);
+        Size winStride = new Size(WINDOW_SIZE / STEP_OVERLAP, WINDOW_SIZE / STEP_OVERLAP); //50% overlap in the sliding window
+        Size padding = new Size(PADDING_SIZE,PADDING_SIZE); //no padding around the image
         MatOfPoint locations = new MatOfPoint(); // an empty vector of locations, so perform full search
-        //HOGDescriptor hog = new HOGDescriptor();
-        HOGDescriptor hog = new HOGDescriptor(sz, new org.opencv.core.Size(16,16), new org.opencv.core.Size(8,8), new org.opencv.core.Size(8,8), 9);
+
+        HOGDescriptor hog = new HOGDescriptor(winSize, blockSize, cellSize, cellSize, 9);
         Log.i(TAG, "Constructed");
 
-//        with or without thw custom window size
-//        hog.compute(forHOGim, descriptors, new org.opencv.core.Size(16,16), padding, locations);
-        hog.compute(forHOGim, descriptors, winStride, padding, locations);
-        Log.i(TAG,"Computed");
-        Log.i(TAG,String.valueOf(hog.getDescriptorSize())+" "+descriptors.size());
-        Log.i(TAG,String.valueOf(descriptors.get(12,0)[0]));
-        double dd=0.0;
-        for (int i=0;i<3780;i++){
-            if (descriptors.get(i,0)[0]!=dd) Log.i(TAG,"NOT ZERO");
-        }
+        HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors = new HashMap<Integer, HashMap<Integer,MatOfFloat>>();
 
-        Bitmap bm2 = Bitmap.createBitmap(forHOGim.cols(), forHOGim.rows(),Bitmap.Config.ARGB_8888);
-        Utils.matToBitmap(forHOGim,bm2);
-//        iv.setImageBitmap(bm2);
+        for (int col = 0; col < (forHOGim.cols() - OVERLAP_SIZE); col += OVERLAP_SIZE) {
+            HashMap<Integer, MatOfFloat> innerMap = new HashMap<Integer, MatOfFloat>();
+
+            for (int row = 0; row < (forHOGim.rows() - OVERLAP_SIZE); row += OVERLAP_SIZE) {
+                Rect roi = new Rect(col, row, PATCH_SIZE, PATCH_SIZE);
+                Mat patch = forHOGim.submat(roi);
+
+                hog.compute(patch, patch_descriptor);
+                Log.i(TAG, "Computed");
+                innerMap.put(row, patch_descriptor);
+            }
+
+            img_descriptors.put(col, innerMap);
+        }
     }
 }
