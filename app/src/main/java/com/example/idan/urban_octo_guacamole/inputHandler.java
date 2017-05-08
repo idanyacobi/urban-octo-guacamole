@@ -3,7 +3,6 @@ package com.example.idan.urban_octo_guacamole;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.provider.Settings;
 import android.util.Log;
 
 import org.opencv.android.Utils;
@@ -17,7 +16,6 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.HOGDescriptor;
 
 import java.util.HashMap;
-import java.util.Vector;
 
 import static android.content.ContentValues.TAG;
 
@@ -42,7 +40,6 @@ class inputHandler {
     Mat getImg() {
         // need to resize image before creating the matrix
 
-        // TODO: read it directly to Mat
         // Image has been automatically resized because of high DPI of screen on device.
         // To avoid this we had to set inScaled option to false:
         BitmapFactory.Options options = new BitmapFactory.Options();
