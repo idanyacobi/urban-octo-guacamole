@@ -23,14 +23,16 @@ public class LogicActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logic);
-        imgView = (ImageView)this.findViewById(R.id.faceImage);
-        byte[] byteArray = getIntent().getByteArrayExtra("Face");
-        Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-        imgView.setImageBitmap(bmp);
-        inputHandler = new inputHandler();
-        getMatFromBitmap(bmp);
-        inputHandler.splitToPatches(imgMat);
-        dbh = new dbHelper(this);
+        if(!getIntent().getBooleanExtra("Debug",true)) {
+            imgView = (ImageView) this.findViewById(R.id.faceImage);
+            byte[] byteArray = getIntent().getByteArrayExtra("Face");
+            Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+            imgView.setImageBitmap(bmp);
+            inputHandler = new inputHandler();
+            getMatFromBitmap(bmp);
+        }
+
+
 
     }
 
