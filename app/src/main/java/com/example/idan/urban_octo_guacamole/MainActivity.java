@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity{
 
         // Database initialization - Yacobi
         dbh = initDB();
+        dbh.getAllDescriptors();
 
     }
 

@@ -1,5 +1,9 @@
 package com.example.idan.urban_octo_guacamole;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.opencv.core.MatOfFloat;
+
 /**
  * Created by idan on 08/05/2017.
  */
@@ -9,20 +13,33 @@ class Descriptor {
     int _id;
     int _col;
     int _row;
-    String _desc;
+    MatOfFloat _desc;
 
     // Empty constructor
     public Descriptor(){
 
     }
+
     // constructor
     public Descriptor(int id, int col, int row, String desc){
         this._id = id;
         this._col = col;
         this._row = row;
-        this._desc = desc;
+        this._desc =  parseDescriptor(desc);
     }
-    
+
+    private MatOfFloat parseDescriptor(String desc) {
+        MatOfFloat d = new MatOfFloat(Settings.DESC_LENGTH);
+        JSONObject reader = null;
+        try {
+            reader = new JSONObject(desc);
+        } catch (JSONException e) {
+            System.out.println(e.getMessage());
+            return d;
+        }
+        return d;
+    }
+
     // getting ID
     public int getID(){
         return this._id;
@@ -53,13 +70,13 @@ class Descriptor {
     }
 
     // getting descriptor
-    public String getDescriptor(){
+    public MatOfFloat getDescriptor(){
         return this._desc;
     }
 
     // setting descriptor
     public void setDesc(String desc){
-        this._desc = desc;
+        this._desc = parseDescriptor(desc);
     }
 
     // TODO
