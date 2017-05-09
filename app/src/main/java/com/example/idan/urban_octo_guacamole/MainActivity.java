@@ -48,8 +48,6 @@ public class MainActivity extends AppCompatActivity{
     private ImageView mImageView;
 
 
-
-
     private FaceOverlayView mFaceOverlayView;
     static final int REQUEST_TAKE_PHOTO = 1;
 

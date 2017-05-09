@@ -7,10 +7,13 @@ import android.view.View;
 
 public class LogicActivity extends AppCompatActivity {
 
+    private dbHelper dbh;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logic);
+        dbh = new dbHelper(this);
     }
 
     public void nextActivity(View view){
