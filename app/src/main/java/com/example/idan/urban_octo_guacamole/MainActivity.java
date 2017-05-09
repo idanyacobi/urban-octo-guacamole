@@ -30,6 +30,7 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,7 +74,15 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void nextActivity(View view){
+
+
+
         Intent intent = new Intent(this, LogicActivity.class);
+        mImageBitmap = mFaceOverlayView.getImage();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        mImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        intent.putExtra("Face",byteArray);
         startActivity(intent);
     }
 

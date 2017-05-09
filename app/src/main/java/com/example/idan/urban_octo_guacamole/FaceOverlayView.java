@@ -84,7 +84,7 @@ public class FaceOverlayView extends View {
         if ((mBitmap != null) && (mFaces != null)) {
             if(mFaces.size()==0)
                 return;
-            double scale = drawBitmap(canvas);
+//            double scale = drawBitmap(canvas);
 //            If we get unaligned image.
 //            Matrix matrix = new Matrix();
 //            matrix.postRotate(-90);
@@ -94,6 +94,10 @@ public class FaceOverlayView extends View {
             mBitmap = Bitmap.createBitmap(mBitmap,rect.x, rect.y, Math.min(rect.width,mBitmap.getWidth()), Math.min(rect.height,mBitmap.getHeight()));
             drawBitmap(canvas);
         }
+    }
+
+    public Bitmap getImage(){
+        return mBitmap;
     }
 
     private double drawBitmap(Canvas canvas) {
@@ -130,7 +134,7 @@ public class FaceOverlayView extends View {
             right = (float) scale * ( face.getPosition().x + face.getWidth() );
             bottom = (float) scale * ( face.getPosition().y + face.getHeight() );
 
-            canvas.drawRect( left, top, right, bottom, paint );
+//            canvas.drawRect( left, top, right, bottom, paint );
             rect.setBounds(Math.max((int)face.getPosition().x,0),Math.max((int)face.getPosition().y,0),(int)face.getWidth(),(int)face.getHeight());
         }
         return rect;
