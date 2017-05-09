@@ -36,7 +36,7 @@ public class dbHelper extends SQLiteOpenHelper {
     private static String TAG = "DataBaseHelper"; // Tag just for the LogCat window
     //destination path (location) of our database on device
     private static String DB_PATH = "";
-    private static String DB_NAME = "imgs_and_depths.db";// Database name
+    private static String DB_NAME = "imgs_and_depth.db";// Database name
     private SQLiteDatabase myDataBase;
     private final Context myContext;
 
@@ -105,6 +105,7 @@ public class dbHelper extends SQLiteOpenHelper {
     //Open the database, so we can query it
     public boolean openDataBase() throws SQLException
     {
+        //Open the database
         String mPath = DB_PATH + DB_NAME;
         //Log.v("mPath", mPath);
         myDataBase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.CREATE_IF_NECESSARY);
