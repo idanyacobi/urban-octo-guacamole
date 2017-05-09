@@ -27,6 +27,7 @@ public class dbHelper extends SQLiteOpenHelper {
     // Database Version
     private static final int DATABASE_VERSION = 1;
 
+
     // Database Name
     public static final String DATABASE_NAME = "imgs_and_depths.db";
     public static final String TABLE_DESCS = "descriptors";
@@ -36,8 +37,8 @@ public class dbHelper extends SQLiteOpenHelper {
     //destination path (location) of our database on device
     private static String DB_PATH = "";
     private static String DB_NAME = "imgs_and_depths.db";// Database name
-    private SQLiteDatabase mDataBase;
-    private final Context mContext;
+    private SQLiteDatabase myDataBase;
+    private final Context myContext;
 
 
     public dbHelper(Context context) {
@@ -49,8 +50,8 @@ public class dbHelper extends SQLiteOpenHelper {
         {
             DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
         }
-        this.mContext = context;
-        getAllDescriptors();
+        this.myContext = context;
+//        getAllDescriptors();
     }
 
 
@@ -87,7 +88,7 @@ public class dbHelper extends SQLiteOpenHelper {
     //Copy the database from assets
     private void copyDataBase() throws IOException
     {
-        InputStream mInput = mContext.getAssets().open(DB_NAME);
+        InputStream mInput = myContext.getAssets().open(DB_NAME);
         String outFileName = DB_PATH + DB_NAME;
         OutputStream mOutput = new FileOutputStream(outFileName);
         byte[] mBuffer = new byte[1024];
@@ -106,16 +107,16 @@ public class dbHelper extends SQLiteOpenHelper {
     {
         String mPath = DB_PATH + DB_NAME;
         //Log.v("mPath", mPath);
-        mDataBase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.CREATE_IF_NECESSARY);
+        myDataBase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.CREATE_IF_NECESSARY);
         //mDataBase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.NO_LOCALIZED_COLLATORS);
-        return mDataBase != null;
+        return myDataBase != null;
     }
 
     @Override
     public synchronized void close()
     {
-        if(mDataBase != null)
-            mDataBase.close();
+        if(myDataBase != null)
+            myDataBase.close();
         super.close();
     }
 
@@ -130,7 +131,7 @@ public class dbHelper extends SQLiteOpenHelper {
 
     }
 
-    // Getting single contact TODO
+    // Getting single descriptor TODO
     public Descriptor getDescriptor(int id) {return new Descriptor();}
 
     // Getting All Descriptors
