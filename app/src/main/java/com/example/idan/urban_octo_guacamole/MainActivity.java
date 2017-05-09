@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity{
 
     public void nextActivity(View view){
         Intent intent = new Intent(this, LogicActivity.class);
+        mImageBitmap = mFaceOverlayView.getImage();
+        intent.putExtra("Face",mImageBitmap);
         startActivity(intent);
     }
 

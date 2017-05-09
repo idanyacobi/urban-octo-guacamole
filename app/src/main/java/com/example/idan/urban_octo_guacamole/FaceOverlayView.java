@@ -96,6 +96,10 @@ public class FaceOverlayView extends View {
         }
     }
 
+    public Bitmap getImage(){
+        return mBitmap;
+    }
+
     private double drawBitmap(Canvas canvas) {
         double viewWidth = canvas.getWidth();
         double viewHeight = canvas.getHeight();

@@ -72,10 +72,10 @@ class inputHandler {
         HOGDescriptor hog = new HOGDescriptor(winSize, blockSize, cellSize, cellSize, 9);
         Log.i(TAG, "Constructed");
 
-        HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors = new HashMap<Integer, HashMap<Integer,MatOfFloat>>();
+        HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors = new HashMap<>();
 
         for (int col = 0; col < (forHOGim.cols() - OVERLAP_SIZE); col += OVERLAP_SIZE) {
-            HashMap<Integer, MatOfFloat> innerMap = new HashMap<Integer, MatOfFloat>();
+            HashMap<Integer, MatOfFloat> innerMap = new HashMap<>();
 
             for (int row = 0; row < (forHOGim.rows() - OVERLAP_SIZE); row += OVERLAP_SIZE) {
                 Rect roi = new Rect(col, row, PATCH_SIZE, PATCH_SIZE);
