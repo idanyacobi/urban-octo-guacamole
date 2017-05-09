@@ -1,7 +1,6 @@
 package com.example.idan.urban_octo_guacamole;
 
 import android.content.Intent;
-import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -12,9 +11,6 @@ import android.widget.ImageView;
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-
-import java.io.IOException;
-import java.util.List;
 
 public class LogicActivity extends AppCompatActivity {
 
@@ -34,10 +30,7 @@ public class LogicActivity extends AppCompatActivity {
         inputHandler = new inputHandler();
         getMatFromBitmap(bmp);
         inputHandler.splitToPatches(imgMat);
-
-        // DB initialization
-        dbh = initDB();
-        List<Descriptor> descs =  dbh.getAllDescriptors();
+        dbh = new dbHelper(this);
 
     }
 
@@ -45,8 +38,6 @@ public class LogicActivity extends AppCompatActivity {
         Mat sourceImage = new Mat(bmp.getWidth(), bmp.getHeight(), CvType.CV_8UC1);
         Utils.bitmapToMat(bmp, sourceImage);
         imgMat = sourceImage;
-        dbh = initDB();
-        List<Descriptor> descs =  dbh.getAllDescriptors();
     }
 
     public void nextActivity(View view){

@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity{
     private Bitmap mImageBitmap;
     private String mCurrentPhotoPath;
     private ImageView mImageView;
+    private dbHelper dbh;
 
 
     private FaceOverlayView mFaceOverlayView;
@@ -71,17 +72,18 @@ public class MainActivity extends AppCompatActivity{
         Bitmap bitmap = BitmapFactory.decodeStream(stream);
 //        mFaceOverlayView.setBitmap(bitmap);
 
+        dbh = new dbHelper(this);
+
     }
 
     public void nextActivity(View view){
-
-
 
         Intent intent = new Intent(this, LogicActivity.class);
         mImageBitmap = mFaceOverlayView.getImage();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         mImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
+        intent.putExtra("Debug",false);
         intent.putExtra("Face",byteArray);
         startActivity(intent);
     }
@@ -93,7 +95,11 @@ public class MainActivity extends AppCompatActivity{
         startActivityForResult(i, RESULT_LOAD_IMAGE);
     }
 
-
+    public void debugMode(View view){
+        Intent intent = new Intent(this, LogicActivity.class);
+        intent.putExtra("Debug",true);
+        startActivity(intent);
+    }
 
     public void dispatchTakePictureIntent() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
