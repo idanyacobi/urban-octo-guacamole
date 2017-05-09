@@ -31,25 +31,6 @@ class inputHandler {
     private static final int PATCH_SIZE = 32;
     private static final int OVERLAP_SIZE = PATCH_SIZE / STEP_OVERLAP;
 
-    private final Context context;
-
-    inputHandler(Context current) {
-        this.context = current;
-    }
-
-    Mat getImg() {
-        // need to resize image before creating the matrix
-
-        // Image has been automatically resized because of high DPI of screen on device.
-        // To avoid this we had to set inScaled option to false:
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inScaled = false;
-        Bitmap bMap = BitmapFactory.decodeResource(context.getResources(), IMG_DRAWABLE, options);
-        Mat sourceImage = new Mat(bMap.getWidth(), bMap.getHeight(), CvType.CV_8UC1);
-        Utils.bitmapToMat(bMap, sourceImage);
-
-        return sourceImage;
-    }
 
     void splitToPatches(Mat imgMat) {
         Mat forHOGim = new Mat();
