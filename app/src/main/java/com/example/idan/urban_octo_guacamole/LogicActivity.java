@@ -45,20 +45,4 @@ public class LogicActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public dbHelper initDB() {
-        dbh = new dbHelper(this);
-
-        try {
-            dbh.createDataBase();
-        } catch (IOException ioe) {
-            throw new Error("Unable to create database");
-        }
-
-        try {
-            dbh.openDataBase();
-        }catch(SQLException sqle){
-            throw sqle;
-        }
-        return dbh;
-    }
 }

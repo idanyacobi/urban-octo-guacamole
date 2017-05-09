@@ -3,6 +3,7 @@ package com.example.idan.urban_octo_guacamole;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity{
         Bitmap bitmap = BitmapFactory.decodeStream(stream);
 //        mFaceOverlayView.setBitmap(bitmap);
 
-        dbh = new dbHelper(this);
+        dbh = initDB();
 
     }
 
@@ -86,6 +87,23 @@ public class MainActivity extends AppCompatActivity{
         intent.putExtra("Debug",false);
         intent.putExtra("Face",byteArray);
         startActivity(intent);
+    }
+
+    public dbHelper initDB() {
+        dbh = new dbHelper(this);
+
+        try {
+            dbh.createDataBase();
+        } catch (IOException ioe) {
+            throw new Error("Unable to create database");
+        }
+
+        try {
+            dbh.openDataBase();
+        }catch(SQLException sqle){
+            throw sqle;
+        }
+        return dbh;
     }
 
 
