@@ -1,18 +1,14 @@
 package com.example.idan.urban_octo_guacamole;
 
-/**
- * Created by idan on 08/05/2017.
- */
-
 class Descriptor {
     //private variables
-    int _id;
-    int _col;
-    int _row;
-    String _desc;
+    private int _id;
+    private int _col;
+    private int _row;
+    private String _desc;
 
     // Empty constructor
-    public Descriptor(){
+    Descriptor(){
 
     }
     // constructor
@@ -29,7 +25,7 @@ class Descriptor {
     }
 
     // setting ID
-    public void setID(int id){
+    void setID(int id){
         this._id = id;
     }
 
@@ -39,7 +35,7 @@ class Descriptor {
     }
 
     // setting col
-    public void setCol(int col){
+    void setCol(int col){
         this._col = col;
     }
 
@@ -48,7 +44,7 @@ class Descriptor {
     }
 
     // setting row
-    public void setRow(int row){
+    void setRow(int row){
         this._row = row;
     }
 
@@ -58,7 +54,7 @@ class Descriptor {
     }
 
     // setting descriptor
-    public void setDesc(String desc){
+    void setDesc(String desc){
         this._desc = desc;
     }
 
