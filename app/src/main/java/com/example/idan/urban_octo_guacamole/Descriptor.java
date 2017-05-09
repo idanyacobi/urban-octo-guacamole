@@ -1,7 +1,10 @@
 package com.example.idan.urban_octo_guacamole;
 
+import android.util.Base64;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opencv.core.Mat;
 import org.opencv.core.MatOfFloat;
 
 /**
