@@ -1,6 +1,7 @@
 package com.example.idan.urban_octo_guacamole;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -8,7 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
-import android.provider.MediaStore;
+import android.provider.*;
+import android.provider.Settings;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,10 +33,15 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -43,8 +50,8 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity{
 
     private static final String TAG = "MainActivity";
-    JavaCameraView javaCameraView;
-    Mat mRgba,imgGray,imgCanny;
+//    JavaCameraView javaCameraView;
+//    Mat mRgba,imgGray,imgCanny;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private Bitmap mImageBitmap;
     private String mCurrentPhotoPath;
@@ -72,11 +79,8 @@ public class MainActivity extends AppCompatActivity{
         mFaceOverlayView = (FaceOverlayView) findViewById( R.id.face_overlay );
         InputStream stream = getResources().openRawResource( R.raw.face2 );
         Bitmap bitmap = BitmapFactory.decodeStream(stream);
-//        mFaceOverlayView.setBitmap(bitmap);
-
-        // Database initialization - Yacobi
-        dbh = initDB();
-        dbh.getAllDescriptors();
+//        dbh = initDB();
+//        dbh.getAllDescriptors();
 
 
     }

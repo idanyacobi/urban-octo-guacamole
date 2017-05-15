@@ -12,6 +12,8 @@ import org.opencv.android.Utils;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 
+import java.util.List;
+
 public class LogicActivity extends AppCompatActivity {
 
     private dbHelper dbh;
@@ -23,15 +25,19 @@ public class LogicActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logic);
-        if(!getIntent().getBooleanExtra("Debug",true)) {
-            imgView = (ImageView) this.findViewById(R.id.faceImage);
-            byte[] byteArray = getIntent().getByteArrayExtra("Face");
-            Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-            imgView.setImageBitmap(bmp);
-            inputHandler = new inputHandler();
-            getMatFromBitmap(bmp);
-        }
-        dbh = (dbHelper)getIntent().getSerializableExtra("DB");
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        databaseAccess.open();
+        List<String> quotes = databaseAccess.getQuotes();
+        databaseAccess.close();
+//        if(!getIntent().getBooleanExtra("Debug",true)) {
+//            imgView = (ImageView) this.findViewById(R.id.faceImage);
+//            byte[] byteArray = getIntent().getByteArrayExtra("Face");
+//            Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+//            imgView.setImageBitmap(bmp);
+//            inputHandler = new inputHandler();
+//            getMatFromBitmap(bmp);
+//        }
+//        dbh = (dbHelper)getIntent().getSerializableExtra("DB");
     }
 
     private void getMatFromBitmap(Bitmap bmp){

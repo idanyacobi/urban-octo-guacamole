@@ -31,14 +31,14 @@ public class dbHelper extends SQLiteOpenHelper implements Serializable {
 
 
     // Database Name
-    public static final String DATABASE_NAME = "imgs_and_depths.db";
+
     public static final String TABLE_DESCS = "descriptors";
     public static final String TABLE_DEPTHS = "depth_patches";
 
     private static String TAG = "DataBaseHelper"; // Tag just for the LogCat window
     //destination path (location) of our database on device
     private static String DB_PATH = "";
-    private static String DB_NAME = "imgs_and_depth.db";// Database name
+    private static String DB_NAME = "imgs_and_depth2.db";// Database name
     private SQLiteDatabase myDataBase;
     private final Context myContext;
 
