@@ -3,6 +3,7 @@ package com.example.idan.urban_octo_guacamole;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -30,9 +31,11 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity{
     private Bitmap mImageBitmap;
     private String mCurrentPhotoPath;
     private ImageView mImageView;
+    private dbHelper dbh;
 
 
     private FaceOverlayView mFaceOverlayView;
@@ -70,11 +74,38 @@ public class MainActivity extends AppCompatActivity{
         Bitmap bitmap = BitmapFactory.decodeStream(stream);
 //        mFaceOverlayView.setBitmap(bitmap);
 
+        // Database initialization
+        dbh = initDB();
+        dbh.getAllDescriptors();
     }
 
     public void nextActivity(View view){
         Intent intent = new Intent(this, LogicActivity.class);
+        mImageBitmap = mFaceOverlayView.getImage();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//        mImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        intent.putExtra("Debug", false);
+        intent.putExtra("Face", byteArray);
+//        intent.putExtra("DB", dbh);
         startActivity(intent);
+    }
+
+    public dbHelper initDB() {
+        dbh = new dbHelper(this);
+
+        try {
+            dbh.createDataBase();
+        } catch (IOException ioe) {
+            throw new Error("Unable to create database");
+        }
+
+        try {
+            dbh.openDataBase();
+        }catch(SQLException sqle){
+            throw sqle;
+        }
+        return dbh;
     }
 
 
@@ -84,7 +115,12 @@ public class MainActivity extends AppCompatActivity{
         startActivityForResult(i, RESULT_LOAD_IMAGE);
     }
 
-
+    public void debugMode(View view){
+        Intent intent = new Intent(this, LogicActivity.class);
+        intent.putExtra("Debug",true);
+        intent.putExtra("DB", dbh);
+        startActivity(intent);
+    }
 
     public void dispatchTakePictureIntent() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

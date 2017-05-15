@@ -16,25 +16,22 @@ import org.opencv.imgproc.Imgproc;
 import java.io.InputStream;
 import java.net.ContentHandler;
 
-/**
- * Created by avrni on 4/24/2017.
- */
 
-public class VertexJack {
-    Context context;
-    Mat imgMat;
-    Bitmap imgOrg;
-    Size s;
-    public float[][] colors;
+class VertexJack {
+    private Context context;
+    private Mat imgMat;
+    private Bitmap imgOrg;
+    private Size s;
+    float[][] colors;
 
-    public VertexJack(Context context){
+    VertexJack(Context context){
         this.context = context;
         this.imgMat = getImgGrayScale();
 //        InputStream stream = context.getResources().openRawResource(R.raw.jack);
 
     }
 
-    public Mat getImgGrayScale() {
+    private Mat getImgGrayScale() {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
         Bitmap bMap = BitmapFactory.decodeResource(context.getResources(),R.raw.jack, options);
@@ -45,11 +42,11 @@ public class VertexJack {
         Imgproc.cvtColor(sourceImage, imgGrayScale, Imgproc.COLOR_BGR2GRAY);
         return imgGrayScale;
     }
-    public void getRgb(Bitmap myImage){
+    void getRgb(Bitmap myImage){
         this.imgOrg = myImage;
     }
 
-    public float[] getVertices(){
+    float[] getVertices(){
         final String TAG = "VertexJack";
         int row = 0;
         int col = 0;

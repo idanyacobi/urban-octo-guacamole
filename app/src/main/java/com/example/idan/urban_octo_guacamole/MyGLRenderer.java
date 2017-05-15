@@ -1,8 +1,5 @@
 package com.example.idan.urban_octo_guacamole;
 
-/**
- * Created by avrni on 4/24/2017.
- */
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -12,7 +9,7 @@ import android.opengl.GLU;
 /**
  *  OpenGL Custom renderer used with GLSurfaceView
  */
-public class MyGLRenderer implements GLSurfaceView.Renderer {
+class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private Cube cube;          // (NEW)
 
@@ -20,7 +17,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private static float speedCube = -5.0f;   // Rotational speed for cube (NEW)
 
     // Constructor
-    public MyGLRenderer(Context context) {
+    MyGLRenderer(Context context) {
         // Set up the buffers for these shapes
         cube = new Cube(context);
     }
