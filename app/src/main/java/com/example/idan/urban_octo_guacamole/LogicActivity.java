@@ -19,33 +19,32 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.List;
+
 public class LogicActivity extends AppCompatActivity {
 
+    private dbHelper dbh;
     private ImageView imgView;
     private inputHandler inputHandler;
     private Mat imgMat;
-    private dbHelper dbh;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logic);
-        if(!getIntent().getBooleanExtra("Debug",true)) {
-            imgView = (ImageView) this.findViewById(R.id.faceImage);
-            InputStream stream = getResources().openRawResource( R.raw.face2 );
-            Bitmap bmp = BitmapFactory.decodeStream(stream);
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        databaseAccess.open();
+        List<String> quotes = databaseAccess.getQuotes();
+        databaseAccess.close();
+//        if(!getIntent().getBooleanExtra("Debug",true)) {
+//            imgView = (ImageView) this.findViewById(R.id.faceImage);
 //            byte[] byteArray = getIntent().getByteArrayExtra("Face");
 //            Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-            imgView.setImageBitmap(bmp);
-            imgMat = getMatFromBitmap(bmp);
-
-            inputHandler = new inputHandler();
-            // Database initialization
-            dbh = initDB();
-            dbh.getAllDescriptors();
-        }
-
+//            imgView.setImageBitmap(bmp);
+//            inputHandler = new inputHandler();
+//            getMatFromBitmap(bmp);
+//        }
+//        dbh = (dbHelper)getIntent().getSerializableExtra("DB");
         // split the input img into patches
         HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors = inputHandler.splitToPatches(imgMat);
 
@@ -71,23 +70,6 @@ public class LogicActivity extends AppCompatActivity {
         Mat sourceImage = new Mat(bmp.getWidth(), bmp.getHeight(), CvType.CV_8UC1);
         Utils.bitmapToMat(bmp, sourceImage);
         return sourceImage;
-    }
-
-    public dbHelper initDB() {
-        dbh = new dbHelper(this);
-
-        try {
-            dbh.createDataBase();
-        } catch (IOException ioe) {
-            throw new Error("Unable to create database");
-        }
-
-        try {
-            dbh.openDataBase();
-        }catch(SQLException sqle){
-            throw sqle;
-        }
-        return dbh;
     }
 
     public void nextActivity(View view){
