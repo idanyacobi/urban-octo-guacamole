@@ -77,17 +77,19 @@ public class MainActivity extends AppCompatActivity{
         // Database initialization
         dbh = initDB();
         dbh.getAllDescriptors();
+
     }
 
     public void nextActivity(View view){
+
         Intent intent = new Intent(this, LogicActivity.class);
         mImageBitmap = mFaceOverlayView.getImage();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 //        mImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
-        intent.putExtra("Debug", false);
-        intent.putExtra("Face", byteArray);
-//        intent.putExtra("DB", dbh);
+        intent.putExtra("Debug",false);
+        intent.putExtra("Face",byteArray);
+        intent.putExtra("DB", dbh);
         startActivity(intent);
     }
 

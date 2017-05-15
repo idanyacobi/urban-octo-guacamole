@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfFloat;
 
-
 class Descriptor {
     //private variables
     private int _id;
