@@ -74,7 +74,9 @@ public class MainActivity extends AppCompatActivity{
         Bitmap bitmap = BitmapFactory.decodeStream(stream);
 //        mFaceOverlayView.setBitmap(bitmap);
 
+        // Database initialization - Yacobi
         dbh = initDB();
+        dbh.getAllDescriptors();
 
 
     }

@@ -1,23 +1,22 @@
 package com.example.idan.urban_octo_guacamole;
 
-/**
- * Created by idan on 08/05/2017.
- */
+import org.opencv.core.Mat;
+
 
 class DepthPatch {
 
     //private variables
-    int _id;
-    int _col;
-    int _row;
-    String _dp;
+    private int _id;
+    private int _col;
+    private int _row;
+    private Mat _dp;
 
     // Empty constructor
-    public DepthPatch(){
+    DepthPatch(){
 
     }
     // constructor
-    public DepthPatch(int id, int col, int row, String dp){
+    public DepthPatch(int id, int col, int row, Mat dp){
         this._id = id;
         this._col = col;
         this._row = row;
@@ -30,7 +29,7 @@ class DepthPatch {
     }
 
     // setting ID
-    public void setID(int id){
+    void setID(int id){
         this._id = id;
     }
 
@@ -40,7 +39,7 @@ class DepthPatch {
     }
 
     // setting col
-    public void setCol(int col){
+    void setCol(int col){
         this._col = col;
     }
 
@@ -49,18 +48,23 @@ class DepthPatch {
     }
 
     // setting row
-    public void setRow(int row){
+    void setRow(int row){
         this._row = row;
     }
 
     // getting depth patch
-    public String getDepthPatch(){
+    public Mat getDepthPatch(){
         return this._dp;
     }
 
     // setting depth patch
-    public void setDP(String dp){
-        this._dp = dp;
+    void setDP(String dp){
+        this._dp = parseDP(dp);
     }
-    
+
+    // TODO
+    private Mat parseDP(String dp) {
+        return new Mat();
+    }
+
 }
