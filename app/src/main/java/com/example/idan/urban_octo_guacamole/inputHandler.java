@@ -31,7 +31,7 @@ class inputHandler {
     private static final int OVERLAP_SIZE = PATCH_SIZE / STEP_OVERLAP;
 
 
-    void splitToPatches(Mat imgMat) {
+    HashMap<Integer, HashMap<Integer, MatOfFloat>> splitToPatches(Mat imgMat) {
         Mat forHOGim = new Mat();
         Size sz = new Size(WIDTH_SIZE, HEIGHT_SIZE);
         Imgproc.resize(imgMat, imgMat, sz);
@@ -68,5 +68,7 @@ class inputHandler {
 
             img_descriptors.put(col, innerMap);
         }
+
+        return img_descriptors;
     }
 }
