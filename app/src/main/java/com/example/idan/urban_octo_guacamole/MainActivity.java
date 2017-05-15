@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity{
         Intent intent = new Intent(this, LogicActivity.class);
         mImageBitmap = mFaceOverlayView.getImage();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        mImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//        mImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         intent.putExtra("Debug",false);
         intent.putExtra("Face",byteArray);

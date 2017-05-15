@@ -21,9 +21,6 @@ import com.google.android.gms.vision.face.Landmark;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * Created by Paul on 11/4/15.
- */
 public class FaceOverlayView extends View {
 
     private Bitmap mBitmap;

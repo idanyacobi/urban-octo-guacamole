@@ -18,21 +18,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by idan on 04/04/2017.
- */
-
-
 public class depthToMesh {
 
-    Mat depth;
-    List<Vector2D> points;
+    private Mat depth;
+    private List<Vector2D> points;
     Map<Integer, Vector2D> pointsMap;
-    DelaunayTriangulator DT;
-    int THRESHOLD = 15;
-    SparseIntArray trans;
-    List<Triangle2D> triangles;
-    Size s;
+    private DelaunayTriangulator DT;
+    private int THRESHOLD = 15;
+    private SparseIntArray trans;
+    private List<Triangle2D> triangles;
+    private Size s;
 
 
     public depthToMesh(Mat depth) {
@@ -50,7 +45,7 @@ public class depthToMesh {
     }
 
 
-    public List<Triangle2D> YacobiTriangulate() {
+    private List<Triangle2D> YacobiTriangulate() {
         List<Triangle2D> triangles = new ArrayList<Triangle2D>();
         int npoints = this.trans.size();
         for (int i = 0; i < npoints; i++) {

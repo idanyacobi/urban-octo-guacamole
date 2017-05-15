@@ -18,32 +18,26 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import android.util.Log;
 
-/**
- * Created by idan on 08/05/2017.
- */
 
 @SuppressWarnings("serial")
-public class dbHelper extends SQLiteOpenHelper implements Serializable {
+class dbHelper extends SQLiteOpenHelper implements Serializable {
 
     // All Static variables
     // Database Version
     private static final int DATABASE_VERSION = 1;
 
-
-    // Database Name
-
-    public static final String TABLE_DESCS = "descriptors";
-    public static final String TABLE_DEPTHS = "depth_patches";
+    private static final String TABLE_DESCS = "descriptors";
+    private static final String TABLE_DEPTHS = "depth_patches";
 
     private static String TAG = "DataBaseHelper"; // Tag just for the LogCat window
     //destination path (location) of our database on device
     private static String DB_PATH = "";
-    private static String DB_NAME = "imgs_and_depth2.db";// Database name
+    private static String DB_NAME = "imgs_and_depth.db";// Database name
     private SQLiteDatabase myDataBase;
     private final Context myContext;
 
 
-    public dbHelper(Context context) {
+    dbHelper(Context context) {
         super(context, DB_NAME, null, 1);// 1? Its database Version
         if(android.os.Build.VERSION.SDK_INT >= 17){
             DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
@@ -57,10 +51,9 @@ public class dbHelper extends SQLiteOpenHelper implements Serializable {
     }
 
 
-    public void createDataBase() throws IOException
+    void createDataBase() throws IOException
     {
         //If the database does not exist, copy it from the assets.
-
         boolean mDataBaseExist = checkDataBase();
         if(!mDataBaseExist)
         {
@@ -105,7 +98,7 @@ public class dbHelper extends SQLiteOpenHelper implements Serializable {
     }
 
     //Open the database, so we can query it
-    public boolean openDataBase() throws SQLException
+    boolean openDataBase() throws SQLException
     {
         //Open the database
         String mPath = DB_PATH + DB_NAME;
@@ -138,7 +131,7 @@ public class dbHelper extends SQLiteOpenHelper implements Serializable {
     public Descriptor getDescriptor(int id) {return new Descriptor();}
 
     // Getting All Descriptors
-    public List<Descriptor> getAllDescriptors() {
+    List<Descriptor> getAllDescriptors() {
         List<Descriptor> descList = new ArrayList<Descriptor>();
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_DESCS;

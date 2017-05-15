@@ -15,16 +15,16 @@ import java.util.Random;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public class Cube {
+class Cube {
     private FloatBuffer vertexBuffer;  // Buffer for vertex-array
     private int numFaces = 25000;
 
-    float[] vertices;
-    float[][] colors;
+    private float[] vertices;
+    private float[][] colors;
 
 //    float[][] colors;
     // Constructor - Set up the buffers
-    public Cube(Context context) {
+    Cube(Context context) {
         // Setup vertex-array buffer. Vertices in float. An float has 4 bytes
         VertexJack verJ = new VertexJack(context);
         InputStream imageIS = context.getResources().openRawResource(R.raw.jack_org);
@@ -42,7 +42,7 @@ public class Cube {
 
 
     // Draw the shape
-    public void draw(GL10 gl) {
+    void draw(GL10 gl) {
         gl.glFrontFace(GL10.GL_CCW);    // Front face in counter-clockwise orientation
         gl.glEnable(GL10.GL_CULL_FACE); // Enable cull face
         gl.glCullFace(GL10.GL_BACK);    // Cull the back face (don't display)

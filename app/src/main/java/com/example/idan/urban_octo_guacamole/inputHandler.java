@@ -24,7 +24,6 @@ class inputHandler {
     private static final int HEIGHT_SIZE = 256;
     private static final int WINDOW_SIZE = 16;
     private static final int STEP_OVERLAP = 2;
-    private static final int IMG_DRAWABLE = R.drawable.girl1;
     private static final int BLOCK_SIZE = 16;
     private static final int CELL_SIZE = 8;
     private static final int PADDING_SIZE = 0;
