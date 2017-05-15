@@ -77,6 +77,7 @@ public class LogicActivity extends AppCompatActivity {
                 Descriptor min_desc = new Descriptor();
                 float min_dist = MAX_FLOAT_NUM;
 
+                // run on all the descriptor and save the one with the smallest distance
                 for (Descriptor db_desc:env_descs) {
                     float dis_res = db_desc.distanceFrom(input_desc);
                     if (dis_res < min_dist) {
@@ -87,10 +88,23 @@ public class LogicActivity extends AppCompatActivity {
 
                         min_dist = dis_res;
                     }
-//                    System.out.println("Here");
+
+                // get the patch depth map
+                DepthPatch dp = new DepthPatch();
+                dp = getDepthPatch(min_desc.getID(), min_desc.getCol(), min_desc.getRow());
+                System.out.println("Here");
                 }
             }
         }
+    }
+
+    private DepthPatch getDepthPatch(int id, int col, int row) {
+        String query = String.format("select * from depth_patches where id == %d and col == %d and row == %d;", id, col, row);
+        List<DepthPatch> query_res = databaseAccess.exeDepthPatchesQuery(query);
+
+
+//        return query_res;
+        return null;
     }
 
     private List<Descriptor> getPatchEnvDescs(Integer col, Integer row) {
@@ -102,7 +116,7 @@ public class LogicActivity extends AppCompatActivity {
         Integer lower_row = row - ENV_SIZE;
 
         String query = String.format("select * from descriptors where col > %d and col < %d and row > %d and row < %d;", lower_col, upper_col, lower_row, upper_row);
-        List<Descriptor> query_res = databaseAccess.exeQuery(query);
+        List<Descriptor> query_res = databaseAccess.exeDescriptorsQuery(query);
 
         return query_res;
     }
