@@ -36,6 +36,15 @@ public class LogicActivity extends AppCompatActivity {
         databaseAccess.open();
         List<String> quotes = databaseAccess.getQuotes();
         databaseAccess.close();
+
+        imgView = (ImageView) this.findViewById(R.id.faceImage);
+        InputStream stream = getResources().openRawResource( R.raw.face2 );
+        Bitmap bmp = BitmapFactory.decodeStream(stream);
+        imgView.setImageBitmap(bmp);
+        imgMat = getMatFromBitmap(bmp);
+
+        inputHandler = new inputHandler();
+
 //        if(!getIntent().getBooleanExtra("Debug",true)) {
 //            imgView = (ImageView) this.findViewById(R.id.faceImage);
 //            byte[] byteArray = getIntent().getByteArrayExtra("Face");
@@ -45,6 +54,7 @@ public class LogicActivity extends AppCompatActivity {
 //            getMatFromBitmap(bmp);
 //        }
 //        dbh = (dbHelper)getIntent().getSerializableExtra("DB");
+
         // split the input img into patches
         HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors = inputHandler.splitToPatches(imgMat);
 
