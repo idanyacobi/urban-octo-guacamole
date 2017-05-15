@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,8 @@ import android.util.Log;
  * Created by idan on 08/05/2017.
  */
 
-public class dbHelper extends SQLiteOpenHelper {
+@SuppressWarnings("serial")
+public class dbHelper extends SQLiteOpenHelper implements Serializable {
 
     // All Static variables
     // Database Version

@@ -35,6 +35,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity{
 
         dbh = initDB();
 
+
     }
 
     public void nextActivity(View view){
@@ -86,6 +88,7 @@ public class MainActivity extends AppCompatActivity{
         byte[] byteArray = stream.toByteArray();
         intent.putExtra("Debug",false);
         intent.putExtra("Face",byteArray);
+        intent.putExtra("DB", dbh);
         startActivity(intent);
     }
 
@@ -116,6 +119,7 @@ public class MainActivity extends AppCompatActivity{
     public void debugMode(View view){
         Intent intent = new Intent(this, LogicActivity.class);
         intent.putExtra("Debug",true);
+        intent.putExtra("DB", dbh);
         startActivity(intent);
     }
 
