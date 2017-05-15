@@ -143,10 +143,10 @@ class dbHelper extends SQLiteOpenHelper implements Serializable {
         if (cursor.moveToFirst()) {
             do {
                 Descriptor desc = new Descriptor();
-                desc.setID(Integer.parseInt(cursor.getString(0)));
-                desc.setCol(Integer.parseInt(cursor.getString(1)));
-                desc.setRow(Integer.parseInt(cursor.getString(2)));
-                desc.setDesc(cursor.getString(3));
+//                desc.setID(Integer.parseInt(cursor.getString(0)));
+//                desc.setCol(Integer.parseInt(cursor.getString(1)));
+//                desc.setRow(Integer.parseInt(cursor.getString(2)));
+//                desc.setDesc(cursor.getString(3));
                 // Adding descriptor to list
                 descList.add(desc);
             } while (cursor.moveToNext());

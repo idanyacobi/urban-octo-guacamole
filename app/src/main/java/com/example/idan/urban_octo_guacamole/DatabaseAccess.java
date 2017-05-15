@@ -1,9 +1,5 @@
 package com.example.idan.urban_octo_guacamole;
 
-/**
- * Created by avrni on 5/15/2017.
- */
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -61,15 +57,20 @@ public class DatabaseAccess {
      *
      * @return a List of quotes
      */
-    public List<String> getQuotes() {
-        List<String> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT * FROM descriptors", null);
+    List<Descriptor> exeQuery(String query_str) {
+        // query = "SELECT * FROM descriptors"
+        List<Descriptor> list = new ArrayList<>();
+        Cursor cursor = database.rawQuery(query_str, null);
         cursor.moveToFirst();
-        int i =0;
-        while (i<10) {
-            list.add(cursor.getString(3));
+
+        while (!cursor.isAfterLast()) {
+            Descriptor desc = new Descriptor();
+            desc.setID(Integer.parseInt(cursor.getString(0)));
+            desc.setCol(Integer.parseInt(cursor.getString(1)));
+            desc.setRow(Integer.parseInt(cursor.getString(2)));
+            desc.setDesc(MatSerializer.string2MatOfFloat(cursor.getString(3)));
+            list.add(desc);
             cursor.moveToNext();
-            i++;
         }
         cursor.close();
         return list;
