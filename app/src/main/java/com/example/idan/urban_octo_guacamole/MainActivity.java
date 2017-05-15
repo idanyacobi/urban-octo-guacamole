@@ -49,8 +49,6 @@ public class MainActivity extends AppCompatActivity{
     private Bitmap mImageBitmap;
     private String mCurrentPhotoPath;
     private ImageView mImageView;
-    private dbHelper dbh;
-
 
     private FaceOverlayView mFaceOverlayView;
     static final int REQUEST_TAKE_PHOTO = 1;
@@ -74,10 +72,6 @@ public class MainActivity extends AppCompatActivity{
         Bitmap bitmap = BitmapFactory.decodeStream(stream);
 //        mFaceOverlayView.setBitmap(bitmap);
 
-        // Database initialization
-        dbh = initDB();
-        dbh.getAllDescriptors();
-
     }
 
     public void nextActivity(View view){
@@ -89,27 +83,8 @@ public class MainActivity extends AppCompatActivity{
         byte[] byteArray = stream.toByteArray();
         intent.putExtra("Debug",false);
         intent.putExtra("Face",byteArray);
-        intent.putExtra("DB", dbh);
         startActivity(intent);
     }
-
-    public dbHelper initDB() {
-        dbh = new dbHelper(this);
-
-        try {
-            dbh.createDataBase();
-        } catch (IOException ioe) {
-            throw new Error("Unable to create database");
-        }
-
-        try {
-            dbh.openDataBase();
-        }catch(SQLException sqle){
-            throw sqle;
-        }
-        return dbh;
-    }
-
 
     static final int RESULT_LOAD_IMAGE = 1;
     public void pickImage(View view) {
@@ -120,7 +95,6 @@ public class MainActivity extends AppCompatActivity{
     public void debugMode(View view){
         Intent intent = new Intent(this, LogicActivity.class);
         intent.putExtra("Debug",true);
-        intent.putExtra("DB", dbh);
         startActivity(intent);
     }
 
