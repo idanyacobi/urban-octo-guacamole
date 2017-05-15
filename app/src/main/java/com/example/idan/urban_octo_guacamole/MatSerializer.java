@@ -15,17 +15,20 @@ public class MatSerializer {
     private static final int HEIGHT = Settings.PATCH_SIZE;
 
     public static Mat string2Mat(String matStr) {
-        Mat m = new Mat();
-        String[] rows = matStr.split(";");
+        Mat res_dp = new Mat(Settings.PATCH_SIZE, Settings.PATCH_SIZE, Settings.IMAGE_CVTYPE);
 
-        for (int i=0; i < HEIGHT; i++) {
-            String[] vals =  rows[i].split(",");
-            for (int j=0; j < WIDTH; j++) {
-                m.put(j, i, Float.parseFloat(vals[j]));
+        String[] rows_str = matStr.replace("{\"patch_descriptor\":\"[", "").replace("]\"}", "").split(";\\\\n  ");
+
+        for (int row = 0; row < rows_str.length; row++) {
+            String[] floats_list_str = rows_str[row].split(",");
+
+
+            for (int col = 0; col < floats_list_str.length; col++) {
+                res_dp.put(row, col, Float.parseFloat(floats_list_str[col]));
             }
         }
 
-        return m;
+        return res_dp;
     }
 
     public static MatOfFloat string2MatOfFloat(String matStr) {

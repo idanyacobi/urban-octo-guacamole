@@ -58,13 +58,8 @@ class DepthPatch {
     }
 
     // setting depth patch
-    void setDP(String dp){
-        this._dp = parseDP(dp);
-    }
-
-    // TODO
-    private Mat parseDP(String dp) {
-        return new Mat();
+    void setDP(Mat dp){
+        this._dp = dp;
     }
 
 }

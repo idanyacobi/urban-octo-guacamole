@@ -168,10 +168,10 @@ class dbHelper extends SQLiteOpenHelper implements Serializable {
         if (cursor.moveToFirst()) {
             do {
                 DepthPatch desc = new DepthPatch();
-                desc.setID(Integer.parseInt(cursor.getString(0)));
-                desc.setCol(Integer.parseInt(cursor.getString(1)));
-                desc.setRow(Integer.parseInt(cursor.getString(2)));
-                desc.setDP(cursor.getString(3));
+//                desc.setID(Integer.parseInt(cursor.getString(0)));
+//                desc.setCol(Integer.parseInt(cursor.getString(1)));
+//                desc.setRow(Integer.parseInt(cursor.getString(2)));
+//                desc.setDP(cursor.getString(3));
                 // Adding depth patch to list
                 dpList.add(desc);
             } while (cursor.moveToNext());

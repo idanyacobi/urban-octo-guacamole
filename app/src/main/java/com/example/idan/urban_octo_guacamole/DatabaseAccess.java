@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class DatabaseAccess {
+class DatabaseAccess {
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase database;
     private static DatabaseAccess instance;
@@ -29,7 +29,7 @@ public class DatabaseAccess {
      * @param context the Context
      * @return the instance of DabaseAccess
      */
-    public static DatabaseAccess getInstance(Context context) {
+    static DatabaseAccess getInstance(Context context) {
         if (instance == null) {
             instance = new DatabaseAccess(context);
         }
@@ -39,14 +39,14 @@ public class DatabaseAccess {
     /**
      * Open the database connection.
      */
-    public void open() {
+    void open() {
         this.database = openHelper.getWritableDatabase();
     }
 
     /**
      * Close the database connection.
      */
-    public void close() {
+    void close() {
         if (database != null) {
             this.database.close();
         }
@@ -57,8 +57,7 @@ public class DatabaseAccess {
      *
      * @return a List of quotes
      */
-    List<Descriptor> exeQuery(String query_str) {
-        // query = "SELECT * FROM descriptors"
+    List<Descriptor> exeDescriptorsQuery(String query_str) {
         List<Descriptor> list = new ArrayList<>();
         Cursor cursor = database.rawQuery(query_str, null);
         cursor.moveToFirst();
@@ -70,6 +69,29 @@ public class DatabaseAccess {
             desc.setRow(Integer.parseInt(cursor.getString(2)));
             desc.setDesc(MatSerializer.string2MatOfFloat(cursor.getString(3)));
             list.add(desc);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return list;
+    }
+
+    /**
+     * Read all quotes from the database.
+     *
+     * @return a List of quotes
+     */
+    List<DepthPatch> exeDepthPatchesQuery(String query_str) {
+        List<DepthPatch> list = new ArrayList<>();
+        Cursor cursor = database.rawQuery(query_str, null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            DepthPatch dp = new DepthPatch();
+            dp.setID(Integer.parseInt(cursor.getString(0)));
+            dp.setCol(Integer.parseInt(cursor.getString(1)));
+            dp.setRow(Integer.parseInt(cursor.getString(2)));
+            dp.setDP(MatSerializer.string2Mat(cursor.getString(3)));
+            list.add(dp);
             cursor.moveToNext();
         }
         cursor.close();
