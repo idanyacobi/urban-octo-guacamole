@@ -15,6 +15,8 @@ import org.opencv.core.MatOfFloat;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +33,7 @@ public class LogicActivity extends AppCompatActivity {
     private inputHandler inputHandler;
     private Mat imgMat;
     DatabaseAccess databaseAccess;
+    private Comparator<? super DepthPatch> compByName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +65,14 @@ public class LogicActivity extends AppCompatActivity {
 
         ArrayList<DepthPatch> depth_patches = processDescriptors(img_descriptors);
 
+        createDepthMap(depth_patches);
+
         databaseAccess.close();
+    }
+
+    private void createDepthMap(ArrayList<DepthPatch> depth_patches) {
+        Collections.sort(depth_patches, getCompByName());
+        System.out.println("here");
     }
 
     private ArrayList<DepthPatch> processDescriptors(HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors) {
@@ -91,10 +101,9 @@ public class LogicActivity extends AppCompatActivity {
 
                         min_dist = dis_res;
                     }
-
+                }
                 // get the patch depth map
                 dps.add(getDepthPatch(min_desc.getID(), min_desc.getCol(), min_desc.getRow()));
-                }
             }
         }
 
@@ -131,5 +140,9 @@ public class LogicActivity extends AppCompatActivity {
     public void nextActivity(View view){
         Intent intent = new Intent(this, Main2Activity.class);
         startActivity(intent);
+    }
+
+    public Comparator<? super DepthPatch> getCompByName() {
+        return compByName;
     }
 }
