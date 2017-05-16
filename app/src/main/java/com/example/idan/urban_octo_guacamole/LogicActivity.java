@@ -60,12 +60,15 @@ public class LogicActivity extends AppCompatActivity {
         // split the input img into patches
         HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors = inputHandler.splitToPatches(imgMat);
 
-        processDescriptors(img_descriptors);
+        ArrayList<DepthPatch> depth_patches = processDescriptors(img_descriptors);
 
         databaseAccess.close();
     }
 
-    private void processDescriptors(HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors) {
+    private ArrayList<DepthPatch> processDescriptors(HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors) {
+        // create an array list to store all the depth patches
+        ArrayList<DepthPatch> dps = new ArrayList<>();
+
         //run on all the patches
         for (Map.Entry<Integer, HashMap<Integer, MatOfFloat>> col2hashmap : img_descriptors.entrySet()) {
             for (Map.Entry<Integer, MatOfFloat> row2descriptor : col2hashmap.getValue().entrySet()) {
@@ -90,21 +93,19 @@ public class LogicActivity extends AppCompatActivity {
                     }
 
                 // get the patch depth map
-                DepthPatch dp = new DepthPatch();
-                dp = getDepthPatch(min_desc.getID(), min_desc.getCol(), min_desc.getRow());
-                System.out.println("Here");
+                dps.add(getDepthPatch(min_desc.getID(), min_desc.getCol(), min_desc.getRow()));
                 }
             }
         }
+
+        return dps;
     }
 
     private DepthPatch getDepthPatch(int id, int col, int row) {
         String query = String.format("select * from depth_patches where id == %d and col == %d and row == %d;", id, col, row);
-        List<DepthPatch> query_res = databaseAccess.exeDepthPatchesQuery(query);
+        DepthPatch query_res = databaseAccess.exeDepthPatchesQuery(query);
 
-
-//        return query_res;
-        return null;
+        return query_res;
     }
 
     private List<Descriptor> getPatchEnvDescs(Integer col, Integer row) {

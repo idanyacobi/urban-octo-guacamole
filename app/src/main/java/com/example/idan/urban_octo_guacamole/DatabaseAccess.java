@@ -80,21 +80,18 @@ class DatabaseAccess {
      *
      * @return a List of quotes
      */
-    List<DepthPatch> exeDepthPatchesQuery(String query_str) {
+    DepthPatch exeDepthPatchesQuery(String query_str) {
         List<DepthPatch> list = new ArrayList<>();
         Cursor cursor = database.rawQuery(query_str, null);
         cursor.moveToFirst();
 
-        while (!cursor.isAfterLast()) {
-            DepthPatch dp = new DepthPatch();
-            dp.setID(Integer.parseInt(cursor.getString(0)));
-            dp.setCol(Integer.parseInt(cursor.getString(1)));
-            dp.setRow(Integer.parseInt(cursor.getString(2)));
-            dp.setDP(MatSerializer.string2Mat(cursor.getString(3)));
-            list.add(dp);
-            cursor.moveToNext();
-        }
+        DepthPatch dp = new DepthPatch();
+        dp.setID(Integer.parseInt(cursor.getString(0)));
+        dp.setCol(Integer.parseInt(cursor.getString(1)));
+        dp.setRow(Integer.parseInt(cursor.getString(2)));
+        dp.setDP(MatSerializer.string2Mat(cursor.getString(3)));
+
         cursor.close();
-        return list;
+        return dp;
     }
 }
