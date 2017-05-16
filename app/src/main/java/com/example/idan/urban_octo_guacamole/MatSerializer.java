@@ -33,7 +33,8 @@ public class MatSerializer {
 
     public static MatOfFloat string2MatOfFloat(String matStr) {
         MatOfFloat m = new MatOfFloat();
-        Float[] desc = new Float[324];
+        // define it base on the other parameters
+        Float[] desc = new Float[36];
 
         String[] floats_list_str = matStr.replace("{\"patch_descriptor\":\"[", "").replace("]\"}", "").split(",");
 

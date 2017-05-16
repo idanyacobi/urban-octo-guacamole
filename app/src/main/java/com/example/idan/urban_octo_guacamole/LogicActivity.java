@@ -71,7 +71,7 @@ public class LogicActivity extends AppCompatActivity {
     }
 
     private void createDepthMap(ArrayList<DepthPatch> depth_patches) {
-        Collections.sort(depth_patches, getCompByName());
+//        Collections.sort(depth_patches, getCompByName());
         System.out.println("here");
     }
 
@@ -79,6 +79,7 @@ public class LogicActivity extends AppCompatActivity {
         // create an array list to store all the depth patches
         ArrayList<DepthPatch> dps = new ArrayList<>();
 
+        int i = 0;
         //run on all the patches
         for (Map.Entry<Integer, HashMap<Integer, MatOfFloat>> col2hashmap : img_descriptors.entrySet()) {
             for (Map.Entry<Integer, MatOfFloat> row2descriptor : col2hashmap.getValue().entrySet()) {
@@ -104,6 +105,7 @@ public class LogicActivity extends AppCompatActivity {
                 }
                 // get the patch depth map
                 dps.add(getDepthPatch(min_desc.getID(), min_desc.getCol(), min_desc.getRow()));
+                System.out.println(String.format("done processing %d queries", i++));
             }
         }
 

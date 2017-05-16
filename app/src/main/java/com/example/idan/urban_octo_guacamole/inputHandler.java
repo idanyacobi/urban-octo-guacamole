@@ -21,11 +21,11 @@ import static android.content.ContentValues.TAG;
 
 class inputHandler {
     private static final int WIDTH_SIZE = 128;
-    private static final int HEIGHT_SIZE = 256;
-    private static final int WINDOW_SIZE = 16;
+    private static final int HEIGHT_SIZE = 128;
+    private static final int WINDOW_SIZE = 32;
     private static final int STEP_OVERLAP = 2;
-    private static final int BLOCK_SIZE = 16;
-    private static final int CELL_SIZE = 8;
+    private static final int BLOCK_SIZE = 32;
+    private static final int CELL_SIZE = 16;
     private static final int PADDING_SIZE = 0;
     private static final int PATCH_SIZE = 32;
     private static final int OVERLAP_SIZE = PATCH_SIZE / STEP_OVERLAP;
@@ -61,7 +61,7 @@ class inputHandler {
                 Rect roi = new Rect(col, row, PATCH_SIZE, PATCH_SIZE);
                 Mat patch = forHOGim.submat(roi);
 
-                hog.compute(patch, patch_descriptor);
+                hog.compute(patch, patch_descriptor, winStride, padding, locations);
                 Log.i(TAG, "Computed");
                 innerMap.put(row, patch_descriptor);
             }

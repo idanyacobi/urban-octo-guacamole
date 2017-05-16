@@ -81,7 +81,6 @@ class DatabaseAccess {
      * @return a List of quotes
      */
     DepthPatch exeDepthPatchesQuery(String query_str) {
-        List<DepthPatch> list = new ArrayList<>();
         Cursor cursor = database.rawQuery(query_str, null);
         cursor.moveToFirst();
 
