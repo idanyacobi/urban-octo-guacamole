@@ -2,8 +2,10 @@ package com.example.idan.urban_octo_guacamole;
 
 import org.opencv.core.Mat;
 
+import java.util.Comparator;
 
-class DepthPatch {
+
+class DepthPatch implements Comparator<DepthPatch>{
 
     //private variables
     private int _id;
@@ -62,4 +64,22 @@ class DepthPatch {
         this._dp = dp;
     }
 
+    @Override
+    public int compare(DepthPatch o1, DepthPatch o2) {
+        if (o1.getRow() < o2.getRow()) {
+            return -1;
+        }
+        else if (o1.getRow() > o2.getRow()) {
+            return 1;
+        }
+        else if (o1.getCol() < o2.getCol()) {
+            return -1;
+        }
+        else if (o1.getCol() > o2.getCol()) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
 }
