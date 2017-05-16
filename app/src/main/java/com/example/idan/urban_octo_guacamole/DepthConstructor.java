@@ -22,8 +22,9 @@ public class DepthConstructor {
         for (DepthPatch dp : _patches) {
             dp.getDepthPatch().copyTo(
                     depth
-                    .colRange(dp.getCol() * Settings.PATCH_SIZE, (dp.getCol() + 1) * Settings.PATCH_SIZE)
-                    .rowRange(dp.getRow() * Settings.PATCH_SIZE, (dp.getRow() + 1) * Settings.PATCH_SIZE));
+                    .colRange(dp.getCol(), (dp.getCol() + Settings.PATCH_SIZE))
+                    .rowRange(dp.getRow(), (dp.getRow() + Settings.PATCH_SIZE))
+            );
         }
         return depth;
     }
