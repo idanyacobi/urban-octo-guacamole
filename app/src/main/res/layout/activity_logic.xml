@@ -13,17 +13,6 @@
         tools:layout_editor_absoluteY="8dp"
         tools:layout_editor_absoluteX="8dp">
 
-        <ImageButton
-            android:id="@+id/nextActivity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center"
-            android:layout_weight="1"
-            android:onClick="nextActivity"
-            android:src="@drawable/arrow"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp" />
-
         <ImageView
             android:id="@+id/faceImage"
             android:layout_width="match_parent"
