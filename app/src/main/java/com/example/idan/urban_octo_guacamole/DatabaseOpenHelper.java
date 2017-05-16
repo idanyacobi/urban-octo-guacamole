@@ -5,7 +5,6 @@ package com.example.idan.urban_octo_guacamole;
  */
 
 
-
 import android.content.Context;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 

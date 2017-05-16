@@ -43,7 +43,7 @@ public class LogicActivity extends AppCompatActivity {
         databaseAccess.open();
 
         imgView = (ImageView) this.findViewById(R.id.faceImage);
-        InputStream stream = getResources().openRawResource( R.raw.face2 );
+        InputStream stream = getResources().openRawResource( R.raw.face8 );
         Bitmap bmp = BitmapFactory.decodeStream(stream);
         imgView.setImageBitmap(bmp);
         imgMat = getMatFromBitmap(bmp);
@@ -65,14 +65,19 @@ public class LogicActivity extends AppCompatActivity {
 
         ArrayList<DepthPatch> depth_patches = processDescriptors(img_descriptors);
 
-        createDepthMap(depth_patches);
+        Mat depth = createDepthMap(depth_patches);
+
+        Bitmap depthbmp = utils.mat2bmp(depth);
+
+        imgView.setImageBitmap(depthbmp);
 
         databaseAccess.close();
     }
 
-    private void createDepthMap(ArrayList<DepthPatch> depth_patches) {
+    private Mat createDepthMap(ArrayList<DepthPatch> depth_patches) {
 //        Collections.sort(depth_patches, getCompByName());
-        System.out.println("here");
+        DepthConstructor dc = new DepthConstructor(depth_patches);
+        return dc.Construct();
     }
 
     private ArrayList<DepthPatch> processDescriptors(HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors) {
