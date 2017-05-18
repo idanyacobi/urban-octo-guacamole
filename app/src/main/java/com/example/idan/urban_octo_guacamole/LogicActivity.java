@@ -45,7 +45,7 @@ public class LogicActivity extends AppCompatActivity {
         databaseAccess.open();
 
         imgView = (ImageView) this.findViewById(R.id.faceImage);
-        InputStream stream = getResources().openRawResource( R.raw.face22 );
+        InputStream stream = getResources().openRawResource( R.raw.face );
         Bitmap bmp = BitmapFactory.decodeStream(stream);
         imgView.setImageBitmap(bmp);
         imgMat = getMatFromBitmap(bmp);
