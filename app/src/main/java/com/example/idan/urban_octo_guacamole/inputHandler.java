@@ -23,7 +23,7 @@ class inputHandler {
     private static final int WIDTH_SIZE = 128;
     private static final int HEIGHT_SIZE = 128;
     private static final int WINDOW_SIZE = 32;
-    private static final int STEP_OVERLAP = 2;
+    private static final int STEP_OVERLAP = 1;
     private static final int BLOCK_SIZE = 32;
     private static final int CELL_SIZE = 16;
     private static final int PADDING_SIZE = 0;
