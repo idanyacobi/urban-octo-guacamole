@@ -93,7 +93,7 @@ public class LogicActivity extends AppCompatActivity {
     private Mat createDepthMap(ArrayList<DepthPatch> depth_patches) {
 //        Collections.sort(depth_patches, getCompByName());
         DepthConstructor dc = new DepthConstructor(depth_patches);
-        return dc.Construct();
+        return dc.newConstruct();
     }
 
     private ArrayList<DepthPatch> processDescriptors(HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors) {
