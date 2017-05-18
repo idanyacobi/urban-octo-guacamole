@@ -23,7 +23,7 @@ class inputHandler {
     private static final int WIDTH_SIZE = 128;
     private static final int HEIGHT_SIZE = 128;
     private static final int WINDOW_SIZE = 32;
-    private static final int STEP_OVERLAP = 2;
+    private static final int STEP_OVERLAP = 1;
     private static final int BLOCK_SIZE = 32;
     private static final int CELL_SIZE = 16;
     private static final int PADDING_SIZE = 0;
@@ -54,10 +54,10 @@ class inputHandler {
 
         HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors = new HashMap<>();
 
-        for (int col = 0; col < (forHOGim.cols() - OVERLAP_SIZE); col += OVERLAP_SIZE) {
+        for (int col = 0; col <= (forHOGim.cols() - OVERLAP_SIZE); col += OVERLAP_SIZE) {
             HashMap<Integer, MatOfFloat> innerMap = new HashMap<>();
 
-            for (int row = 0; row < (forHOGim.rows() - OVERLAP_SIZE); row += OVERLAP_SIZE) {
+            for (int row = 0; row <= (forHOGim.rows() - OVERLAP_SIZE); row += OVERLAP_SIZE) {
                 Rect roi = new Rect(col, row, PATCH_SIZE, PATCH_SIZE);
                 Mat patch = forHOGim.submat(roi);
 

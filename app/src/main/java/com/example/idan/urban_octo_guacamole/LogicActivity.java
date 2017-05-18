@@ -34,6 +34,8 @@ public class LogicActivity extends AppCompatActivity {
     private Mat imgMat;
     DatabaseAccess databaseAccess;
     private Comparator<? super DepthPatch> compByName;
+    ArrayList<DepthPatch> depth_patches;
+    int i = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +65,7 @@ public class LogicActivity extends AppCompatActivity {
         // split the input img into patches
         HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors = inputHandler.splitToPatches(imgMat);
 
-        ArrayList<DepthPatch> depth_patches = processDescriptors(img_descriptors);
+        depth_patches = processDescriptors(img_descriptors);
 
         Mat depth = createDepthMap(depth_patches);
 
@@ -71,7 +73,21 @@ public class LogicActivity extends AppCompatActivity {
 
         imgView.setImageBitmap(depthbmp);
 
+        /////
+//        for (DepthPatch dp: depth_patches) {
+//            Bitmap dpbmp = utils.mat2bmp(dp.getDepthPatch());
+//            imgView.setImageBitmap(dpbmp);
+//        }
+        /////
+
         databaseAccess.close();
+    }
+
+    public void showDepthPatch(View view){
+        DepthPatch d = depth_patches.get(i);
+        Bitmap dpbmp = utils.mat2bmp(d.getDepthPatch());
+        imgView.setImageBitmap(dpbmp);
+        i++;
     }
 
     private Mat createDepthMap(ArrayList<DepthPatch> depth_patches) {
@@ -88,18 +104,21 @@ public class LogicActivity extends AppCompatActivity {
         //run on all the patches
         for (Map.Entry<Integer, HashMap<Integer, MatOfFloat>> col2hashmap : img_descriptors.entrySet()) {
             for (Map.Entry<Integer, MatOfFloat> row2descriptor : col2hashmap.getValue().entrySet()) {
-                MatOfFloat input_desc = row2descriptor.getValue();
+                MatOfFloat input_descriptor = row2descriptor.getValue();
+                Integer input_col = col2hashmap.getKey();
+                Integer input_row = row2descriptor.getKey();
 
-                // send the col, row to get all the descruptors in the environment
-                List<Descriptor> env_descs = getPatchEnvDescs(col2hashmap.getKey(), row2descriptor.getKey());
+                // send the col, row to get all the descriptors in the environment
+                List<Descriptor> env_descs = getPatchEnvDescs(input_col, input_row);
 
                 Descriptor min_desc = new Descriptor();
                 float min_dist = MAX_FLOAT_NUM;
 
                 // run on all the descriptor and save the one with the smallest distance
                 for (Descriptor db_desc:env_descs) {
-                    float dis_res = db_desc.distanceFrom(input_desc);
+                    float dis_res = db_desc.distanceFrom(input_descriptor);
                     if (dis_res < min_dist) {
+
                         min_desc.setID(db_desc.getID());
                         min_desc.setCol(db_desc.getCol());
                         min_desc.setRow(db_desc.getRow());
@@ -109,10 +128,19 @@ public class LogicActivity extends AppCompatActivity {
                     }
                 }
                 // get the patch depth map
-                dps.add(getDepthPatch(min_desc.getID(), min_desc.getCol(), min_desc.getRow()));
+                DepthPatch dp = getDepthPatch(min_desc.getID(), min_desc.getCol(), min_desc.getRow());
+                DepthPatch res_dp = new DepthPatch(-1, input_col, input_row, dp.getDepthPatch());
+                dps.add(res_dp);
                 System.out.println(String.format("done processing %d queries", i++));
             }
         }
+
+//        for(int f = 0; f < 128; f += 32){
+//            for (int j = 0; j < 128; j += 32){
+//
+//                dps.add(getDepthPatch(2,f,j));
+//            }
+//        }
 
         return dps;
     }
@@ -126,7 +154,6 @@ public class LogicActivity extends AppCompatActivity {
 
     private List<Descriptor> getPatchEnvDescs(Integer col, Integer row) {
         // create an array to store all the relevant descriptors
-        ArrayList<Descriptor> res_descs = new ArrayList<>();
         Integer upper_col = col + ENV_SIZE + PATCH_SIZE;
         Integer lower_col = col - ENV_SIZE;
         Integer upper_row = row + ENV_SIZE + PATCH_SIZE;
