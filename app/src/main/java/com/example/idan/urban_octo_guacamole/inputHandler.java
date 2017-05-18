@@ -41,7 +41,6 @@ class inputHandler {
         Bitmap bm = Bitmap.createBitmap(imgMat.cols(), imgMat.rows(),Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(imgMat.clone(), bm);
 
-        MatOfFloat patch_descriptor = new MatOfFloat(); //an empty vector of descriptors
         Size winSize = new Size(WINDOW_SIZE, WINDOW_SIZE);
         Size blockSize = new Size(BLOCK_SIZE, BLOCK_SIZE);
         Size cellSize = new Size(CELL_SIZE, CELL_SIZE);
@@ -54,10 +53,12 @@ class inputHandler {
 
         HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors = new HashMap<>();
 
-        for (int col = 0; col < (forHOGim.cols() - OVERLAP_SIZE); col += OVERLAP_SIZE) {
+        for (int col = 0; col <= (forHOGim.cols() - OVERLAP_SIZE); col += OVERLAP_SIZE) {
             HashMap<Integer, MatOfFloat> innerMap = new HashMap<>();
 
-            for (int row = 0; row < (forHOGim.rows() - OVERLAP_SIZE); row += OVERLAP_SIZE) {
+            for (int row = 0; row <= (forHOGim.rows() - OVERLAP_SIZE); row += OVERLAP_SIZE) {
+                MatOfFloat patch_descriptor = new MatOfFloat(); //an empty vector of descriptors
+
                 Rect roi = new Rect(col, row, PATCH_SIZE, PATCH_SIZE);
                 Mat patch = forHOGim.submat(roi);
 

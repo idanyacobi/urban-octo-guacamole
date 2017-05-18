@@ -15,7 +15,7 @@ class DatabaseAccess {
     private static DatabaseAccess instance;
 
     /**
-     * Private constructor to aboid object creation from outside classes.
+     * Private constructor to avoid object creation from outside classes.
      *
      * @param context
      */
