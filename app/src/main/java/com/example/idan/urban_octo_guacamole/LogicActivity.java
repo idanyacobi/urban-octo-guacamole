@@ -159,7 +159,8 @@ public class LogicActivity extends AppCompatActivity {
         Integer upper_row = row + ENV_SIZE + PATCH_SIZE;
         Integer lower_row = row - ENV_SIZE;
 
-        String query = String.format("select * from descriptors where col > %d and col < %d and row > %d and row < %d;", lower_col, upper_col, lower_row, upper_row);
+//        String query = String.format("select * from descriptors where col > %d and col < %d and row > %d and row < %d;", lower_col, upper_col, lower_row, upper_row);
+        String query = String.format("select * from descriptors where col == %d and row == %d", col, row);
         List<Descriptor> query_res = databaseAccess.exeDescriptorsQuery(query);
 
         return query_res;
