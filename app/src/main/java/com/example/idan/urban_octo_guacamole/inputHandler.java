@@ -1,12 +1,7 @@
 package com.example.idan.urban_octo_guacamole;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import org.opencv.android.Utils;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfFloat;
 import org.opencv.core.MatOfPoint;
@@ -31,7 +26,7 @@ class inputHandler {
         // base on http://stackoverflow.com/questions/38233753/android-opencv-why-hog-descriptors-are-always-zero
 
         Size winSize = new Size(Settings.WINDOW_SIZE, Settings.WINDOW_SIZE);
-        Size blockSize = new Size(Settings.BLOCK_SIZE, Settings.BLOCK_SIZE);
+        Size blockSize = new Size(Settings.BLOCK, Settings.BLOCK);
         Size cellSize = new Size(Settings.CELL_SIZE, Settings.CELL_SIZE);
         Size winStride = new Size(Settings.WINDOW_SIZE / Settings.STEP_OVERLAP,
                 Settings.WINDOW_SIZE / Settings.STEP_OVERLAP); //50% overlap in the sliding window
@@ -42,11 +37,11 @@ class inputHandler {
         Log.i(TAG, "Constructed");
 
         HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors = new HashMap<>();
-
-        for (int col = 0; col < (forHOGim.cols() - Settings.OVERLAP_SIZE); col += Settings.OVERLAP_SIZE) {
+        // TODO: when overlap return to < instead of <=
+        for (int col = 0; col <= (forHOGim.cols() - Settings.OVERLAP_SIZE); col += Settings.OVERLAP_SIZE) {
             HashMap<Integer, MatOfFloat> innerMap = new HashMap<>();
-
-            for (int row = 0; row < (forHOGim.rows() - Settings.OVERLAP_SIZE); row += Settings.OVERLAP_SIZE) {
+            // TODO: when overlap return to < instead of <=
+            for (int row = 0; row <= (forHOGim.rows() - Settings.OVERLAP_SIZE); row += Settings.OVERLAP_SIZE) {
                 MatOfFloat patch_descriptor = new MatOfFloat(); //an empty vector of descriptors
 
                 Rect roi = new Rect(col, row, Settings.PATCH_SIZE, Settings.PATCH_SIZE);
