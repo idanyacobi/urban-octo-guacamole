@@ -5,13 +5,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import org.opencv.android.Utils;
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfFloat;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -25,6 +28,7 @@ import java.util.List;
 
 import static com.example.idan.urban_octo_guacamole.Settings.ENV_SIZE;
 import static com.example.idan.urban_octo_guacamole.Settings.PATCH_SIZE;
+import static org.opencv.imgcodecs.Imgcodecs.imwrite;
 
 public class LogicActivity extends AppCompatActivity {
 
@@ -56,22 +60,21 @@ public class LogicActivity extends AppCompatActivity {
 
         inputHandler = new inputHandler();
 
-//        if(!getIntent().getBooleanExtra("Debug",true)) {
-//            imgView = (ImageView) this.findViewById(R.id.faceImage);
-//            byte[] byteArray = getIntent().getByteArrayExtra("Face");
-//            Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-//            imgView.setImageBitmap(bmp);
-//            inputHandler = new inputHandler();
-//            getMatFromBitmap(bmp);
-//        }
-//        dbh = (dbHelper)getIntent().getSerializableExtra("DB");
-
         // split the input img into patches
         HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors = inputHandler.splitToPatches(imgMat);
 
         depth_patches = processDescriptors(img_descriptors);
 
         Mat depth = createDepthMap(depth_patches);
+
+        InputStream streamRealDepth = getResources().openRawResource( R.raw.face22 );
+        Bitmap orgBmpRealDepth = BitmapFactory.decodeStream(streamRealDepth);
+        Mat imgMatRealDepth = getMatFromBitmap(orgBmpRealDepth);
+        Imgproc.resize(imgMatRealDepth, imgMatRealDepth, depth.size());
+        Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_RGB2GRAY);
+        Log.i("Test", String.format("imgMatRealDepth size %s", imgMatRealDepth.size()));
+        Log.i("Test", String.format("depth size %s", depth.size()));
+        Log.i("Test", String.format("imgMatRealDepth.type() = %s, depth.type() = %s\n are they equal %s", imgMatRealDepth.type(), depth.type(), imgMatRealDepth.type() == depth.type()));
 
         depthbmp = utils.mat2bmp(depth);
 
@@ -139,13 +142,6 @@ public class LogicActivity extends AppCompatActivity {
             }
         }
 
-//        for(int f = 0; f < 128; f += 32){
-//            for (int j = 0; j < 128; j += 32){
-//
-//                dps.add(getDepthPatch(2,f,j));
-//            }
-//        }
-
         return dps;
     }
 
@@ -163,15 +159,14 @@ public class LogicActivity extends AppCompatActivity {
         Integer upper_row = row + ENV_SIZE + PATCH_SIZE;
         Integer lower_row = row - ENV_SIZE;
 
-//        String query = String.format("select * from descriptors where col > %d and col < %d and row > %d and row < %d;", lower_col, upper_col, lower_row, upper_row);
-        String query = String.format("select * from descriptors where col == %d and row == %d", col, row);
+        String query = String.format("select * from descriptors where col > %d and col < %d and row > %d and row < %d;", lower_col, upper_col, lower_row, upper_row);
         List<Descriptor> query_res = databaseAccess.exeDescriptorsQuery(query);
 
         return query_res;
     }
 
     private Mat getMatFromBitmap(Bitmap bmp){
-        Mat sourceImage = new Mat(bmp.getWidth(), bmp.getHeight(), CvType.CV_16UC1);
+        Mat sourceImage = new Mat(bmp.getWidth(), bmp.getHeight(), Settings.IMAGE_CVTYPE);
         Utils.bitmapToMat(bmp, sourceImage);
         return sourceImage;
     }

@@ -33,8 +33,6 @@ public class MatSerializer {
 
     public static MatOfFloat string2MatOfFloat(String matStr) {
         MatOfFloat m = new MatOfFloat();
-        // define it base on the other parameters
-        Float[] desc = new Float[Settings.DESC_SIZE];
 
         String[] floats_list_str = matStr.replace("[", "").replace("]", "").split(",");
 

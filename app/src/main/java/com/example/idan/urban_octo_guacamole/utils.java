@@ -17,7 +17,7 @@ import org.opencv.imgproc.Imgproc;
 public class utils {
     public static Bitmap mat2bmp(Mat m) {
         Bitmap bmp = null;
-        Mat tmp = new Mat (m.rows(), m.cols(), CvType.CV_8U, new Scalar(4));
+        Mat tmp = new Mat (m.rows(), m.cols(), Settings.IMAGE_CVTYPE, new Scalar(4));
 
         try {
             //Imgproc.cvtColor(seedsImage, tmp, Imgproc.COLOR_RGB2BGRA);

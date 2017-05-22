@@ -40,10 +40,10 @@ class VertexJack {
 //        Bitmap bMap = BitmapFactory.decodeResource(context.getResources(),R.raw.jack, options);
         Bitmap bMap = imgDepth;
         bMap = Bitmap.createScaledBitmap(bMap, 300, 403, true);
-        Mat sourceImage = new Mat(bMap.getWidth(), bMap.getHeight(), CvType.CV_8UC1);
+        Mat sourceImage = new Mat(bMap.getWidth(), bMap.getHeight(), Settings.IMAGE_CVTYPE);
         Utils.bitmapToMat(bMap, sourceImage);
         this.s = sourceImage.size();
-        Mat imgGrayScale = new Mat((int)s.height, (int)s.width, CvType.CV_8UC1);
+        Mat imgGrayScale = new Mat((int)s.height, (int)s.width, Settings.IMAGE_CVTYPE);
         Imgproc.cvtColor(sourceImage, imgGrayScale, Imgproc.COLOR_BGR2GRAY);
         return imgGrayScale;
     }

@@ -43,10 +43,10 @@ class inputHandler {
 
         HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors = new HashMap<>();
 
-        for (int col = 0; col <= (forHOGim.cols() - Settings.OVERLAP_SIZE); col += Settings.OVERLAP_SIZE) {
+        for (int col = 0; col < (forHOGim.cols() - Settings.OVERLAP_SIZE); col += Settings.OVERLAP_SIZE) {
             HashMap<Integer, MatOfFloat> innerMap = new HashMap<>();
 
-            for (int row = 0; row <= (forHOGim.rows() - Settings.OVERLAP_SIZE); row += Settings.OVERLAP_SIZE) {
+            for (int row = 0; row < (forHOGim.rows() - Settings.OVERLAP_SIZE); row += Settings.OVERLAP_SIZE) {
                 MatOfFloat patch_descriptor = new MatOfFloat(); //an empty vector of descriptors
 
                 Rect roi = new Rect(col, row, Settings.PATCH_SIZE, Settings.PATCH_SIZE);
