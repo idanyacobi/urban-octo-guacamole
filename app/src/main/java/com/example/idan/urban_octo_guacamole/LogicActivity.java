@@ -45,7 +45,7 @@ public class LogicActivity extends AppCompatActivity {
         databaseAccess.open();
 
         imgView = (ImageView) this.findViewById(R.id.faceImage);
-        InputStream stream = getResources().openRawResource( R.raw.facej3 );
+        InputStream stream = getResources().openRawResource( R.raw.face22 );
         Bitmap bmp = BitmapFactory.decodeStream(stream);
         imgView.setImageBitmap(bmp);
         imgMat = getMatFromBitmap(bmp);
@@ -68,6 +68,8 @@ public class LogicActivity extends AppCompatActivity {
         depth_patches = processDescriptors(img_descriptors);
 
         Mat depth = createDepthMap(depth_patches);
+
+
 
         Bitmap depthbmp = utils.mat2bmp(depth);
 
