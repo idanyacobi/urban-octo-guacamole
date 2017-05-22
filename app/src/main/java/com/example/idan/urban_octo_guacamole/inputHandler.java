@@ -38,8 +38,6 @@ class inputHandler {
         Imgproc.cvtColor(imgMat, forHOGim, Imgproc.COLOR_RGB2GRAY);
 
         // base on http://stackoverflow.com/questions/38233753/android-opencv-why-hog-descriptors-are-always-zero
-        Bitmap bm = Bitmap.createBitmap(imgMat.cols(), imgMat.rows(),Bitmap.Config.ARGB_8888);
-        Utils.matToBitmap(imgMat.clone(), bm);
 
         Size winSize = new Size(WINDOW_SIZE, WINDOW_SIZE);
         Size blockSize = new Size(BLOCK_SIZE, BLOCK_SIZE);

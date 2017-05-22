@@ -4,6 +4,7 @@ package com.example.idan.urban_octo_guacamole;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 /**
@@ -12,14 +13,15 @@ import android.opengl.GLU;
 class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private Cube cube;          // (NEW)
+    private Bitmap depthImage;
 
     private static float angleCube = 0;    // Rotational angle in degree for cube (NEW)
     private static float speedCube = -5.0f;   // Rotational speed for cube (NEW)
 
     // Constructor
-    MyGLRenderer(Context context) {
+    MyGLRenderer(Context context, Bitmap depthImage , Bitmap orgImage) {
         // Set up the buffers for these shapes
-        cube = new Cube(context);
+        cube = new Cube(context , depthImage, orgImage);
     }
 
 

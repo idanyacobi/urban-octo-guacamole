@@ -2,6 +2,8 @@ package com.example.idan.urban_octo_guacamole;
 
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 /**
@@ -15,8 +17,15 @@ public class Main2Activity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        byte[] bytes = getIntent().getByteArrayExtra("bitmapbytes");
+        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+        byte[] bytes2 = getIntent().getByteArrayExtra("bitmapbytesOrg");
+        Bitmap bmpOrg = BitmapFactory.decodeByteArray(bytes2, 0, bytes2.length);
+
+
         glView = new GLSurfaceView(this);           // Allocate a GLSurfaceView
-        glView.setRenderer(new MyGLRenderer(this)); // Use a custom renderer
+        glView.setRenderer(new MyGLRenderer(this, bmp, bmpOrg)); // Use a custom renderer
         this.setContentView(glView);                // This activity sets to GLSurfaceView
     }
 

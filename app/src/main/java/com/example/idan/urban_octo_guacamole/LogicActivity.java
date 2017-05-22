@@ -13,6 +13,7 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfFloat;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,11 +31,14 @@ public class LogicActivity extends AppCompatActivity {
     public static final Float MAX_FLOAT_NUM = Float.POSITIVE_INFINITY;
     private dbHelper dbh;
     private ImageView imgView;
+
     private inputHandler inputHandler;
     private Mat imgMat;
     DatabaseAccess databaseAccess;
     private Comparator<? super DepthPatch> compByName;
     ArrayList<DepthPatch> depth_patches;
+    Bitmap depthbmp;
+    Bitmap orgBmp;
     int i = 0;
 
     @Override
@@ -46,9 +50,9 @@ public class LogicActivity extends AppCompatActivity {
 
         imgView = (ImageView) this.findViewById(R.id.faceImage);
         InputStream stream = getResources().openRawResource( R.raw.face22 );
-        Bitmap bmp = BitmapFactory.decodeStream(stream);
-        imgView.setImageBitmap(bmp);
-        imgMat = getMatFromBitmap(bmp);
+        orgBmp = BitmapFactory.decodeStream(stream);
+        imgView.setImageBitmap(orgBmp);
+        imgMat = getMatFromBitmap(orgBmp);
 
         inputHandler = new inputHandler();
 
@@ -69,7 +73,7 @@ public class LogicActivity extends AppCompatActivity {
 
         Mat depth = createDepthMap(depth_patches);
 
-        Bitmap depthbmp = utils.mat2bmp(depth);
+        depthbmp = utils.mat2bmp(depth);
 
         imgView.setImageBitmap(depthbmp);
 
@@ -167,13 +171,23 @@ public class LogicActivity extends AppCompatActivity {
     }
 
     private Mat getMatFromBitmap(Bitmap bmp){
-        Mat sourceImage = new Mat(bmp.getWidth(), bmp.getHeight(), CvType.CV_8UC1);
+        Mat sourceImage = new Mat(bmp.getWidth(), bmp.getHeight(), CvType.CV_16UC1);
         Utils.bitmapToMat(bmp, sourceImage);
         return sourceImage;
     }
 
     public void nextActivity(View view){
         Intent intent = new Intent(this, Main2Activity.class);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        depthbmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] bytes = stream.toByteArray();
+        intent.putExtra("bitmapbytes",bytes);
+
+        ByteArrayOutputStream streamOrg = new ByteArrayOutputStream();
+        orgBmp.compress(Bitmap.CompressFormat.JPEG, 100, streamOrg);
+        byte[] bytesOrg = streamOrg.toByteArray();
+        intent.putExtra("bitmapbytesOrg",bytesOrg);
+
         startActivity(intent);
     }
 

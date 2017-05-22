@@ -24,12 +24,17 @@ class Cube {
 
 //    float[][] colors;
     // Constructor - Set up the buffers
-    Cube(Context context) {
+    Cube(Context context, Bitmap depthImage, Bitmap orgImage) {
         // Setup vertex-array buffer. Vertices in float. An float has 4 bytes
-        VertexJack verJ = new VertexJack(context);
-        InputStream imageIS = context.getResources().openRawResource(R.raw.jack_org);
-        Bitmap myImage = BitmapFactory.decodeStream(imageIS);
-        verJ.getRgb(myImage);
+        VertexJack verJ = new VertexJack(context, depthImage);
+
+        //TODO: Jack Example.
+//        InputStream imageIS = context.getResources().openRawResource(R.raw.face22);
+//        Bitmap myImage = BitmapFactory.decodeStream(imageIS);
+
+//        Bitmap myImage = orgImage;
+        orgImage = Bitmap.createScaledBitmap(orgImage, 300, 403, true);
+        verJ.getRgb(orgImage);
         this.vertices =verJ.getVertices();
         this.colors = verJ.colors;
         ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4);
