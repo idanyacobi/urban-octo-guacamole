@@ -21,12 +21,15 @@ class VertexJack {
     private Context context;
     private Mat imgMat;
     private Bitmap imgOrg;
+    private Bitmap imgDepth;
     private Size s;
     float[][] colors;
 
-    VertexJack(Context context){
+    VertexJack(Context context, Bitmap depthImage){
         this.context = context;
+        this.imgDepth = depthImage;
         this.imgMat = getImgGrayScale();
+
 //        InputStream stream = context.getResources().openRawResource(R.raw.jack);
 
     }
@@ -34,7 +37,9 @@ class VertexJack {
     private Mat getImgGrayScale() {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
-        Bitmap bMap = BitmapFactory.decodeResource(context.getResources(),R.raw.jack, options);
+//        Bitmap bMap = BitmapFactory.decodeResource(context.getResources(),R.raw.jack, options);
+        Bitmap bMap = imgDepth;
+        bMap = Bitmap.createScaledBitmap(bMap, 300, 403, true);
         Mat sourceImage = new Mat(bMap.getWidth(), bMap.getHeight(), CvType.CV_8UC1);
         Utils.bitmapToMat(bMap, sourceImage);
         this.s = sourceImage.size();
@@ -60,6 +65,13 @@ class VertexJack {
             this.colors[i/12][1] = (float)Color.green(color)/255;
             this.colors[i/12][2] = (float)Color.blue(color)/255;
             this.colors[i/12][3] = 1.0f;
+
+            if(imgMat.get(row,col)[0] == 0){
+                this.colors[i/12][0] = 0.0f;
+                this.colors[i/12][1] = 0.0f;
+                this.colors[i/12][2] = 0.0f;
+                this.colors[i/12][3] = 1.0f;
+            }
             row+=2;
             vertices[i] = ((float)col/300)-0.5f;
             vertices[i+1] = ((float)-row/300)+0.67f;
