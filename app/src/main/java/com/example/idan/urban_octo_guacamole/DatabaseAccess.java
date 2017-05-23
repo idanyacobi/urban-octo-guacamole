@@ -67,7 +67,7 @@ class DatabaseAccess {
             desc.setID(Integer.parseInt(cursor.getString(0)));
             desc.setCol(Integer.parseInt(cursor.getString(1)));
             desc.setRow(Integer.parseInt(cursor.getString(2)));
-            desc.setDesc(MatSerializer.string2MatOfFloat(cursor.getString(3)));
+            desc.setDesc(MatSerializer.string2Mat(cursor.getString(3)));
             list.add(desc);
             cursor.moveToNext();
         }

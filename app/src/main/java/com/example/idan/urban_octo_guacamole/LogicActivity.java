@@ -59,14 +59,14 @@ public class LogicActivity extends AppCompatActivity {
         // Connect to image view.
         imgView = (ImageView) this.findViewById(R.id.faceImage);
         //Open image.
-        InputStream stream = getResources().openRawResource( R.raw.face22 );
+        InputStream stream = getResources().openRawResource( R.raw.face56 );
         orgBmp = BitmapFactory.decodeStream(stream);
         imgMat = getMatFromBitmap(orgBmp);
 
         inputHandler = new inputHandler();
 
         // split the input img into patches
-        HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors = inputHandler.splitToPatches(imgMat);
+        HashMap<Integer, HashMap<Integer, Mat>> img_descriptors = inputHandler.splitToPatches(imgMat);
 
         depth_patches = processDescriptors(img_descriptors);
 
@@ -92,15 +92,15 @@ public class LogicActivity extends AppCompatActivity {
         return dc.Construct();
     }
 
-    private ArrayList<DepthPatch> processDescriptors(HashMap<Integer, HashMap<Integer, MatOfFloat>> img_descriptors) {
+    private ArrayList<DepthPatch> processDescriptors(HashMap<Integer, HashMap<Integer, Mat>> img_descriptors) {
         // create an array list to store all the depth patches
         ArrayList<DepthPatch> dps = new ArrayList<>();
 
         int i = 0;
         //run on all the patches
-        for (Map.Entry<Integer, HashMap<Integer, MatOfFloat>> col2hashmap : img_descriptors.entrySet()) {
-            for (Map.Entry<Integer, MatOfFloat> row2descriptor : col2hashmap.getValue().entrySet()) {
-                MatOfFloat input_descriptor = row2descriptor.getValue();
+        for (Map.Entry<Integer, HashMap<Integer, Mat>> col2hashmap : img_descriptors.entrySet()) {
+            for (Map.Entry<Integer, Mat> row2descriptor : col2hashmap.getValue().entrySet()) {
+                Mat input_descriptor = row2descriptor.getValue();
                 Integer input_col = col2hashmap.getKey();
                 Integer input_row = row2descriptor.getKey();
 

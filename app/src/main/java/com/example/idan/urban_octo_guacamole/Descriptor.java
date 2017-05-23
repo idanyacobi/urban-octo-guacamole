@@ -20,7 +20,7 @@ class Descriptor {
     private int _id;
     private int _col;
     private int _row;
-    private MatOfFloat _desc;
+    private Mat _desc;
 
     // Empty constructor
     Descriptor(){}
@@ -75,29 +75,17 @@ class Descriptor {
     }
 
     // getting descriptor
-    public MatOfFloat getDescriptor(){
+    public Mat getDescriptor(){
         return this._desc;
     }
 
     // setting descriptor
-    void setDesc(MatOfFloat desc){
+    void setDesc(Mat desc){
         this._desc = desc;
     }
 
-    float distanceFrom(MatOfFloat other_desc) {
-        float min_val = Float.POSITIVE_INFINITY;
-
-        for(int j = 0; j < this._desc.rows(); j++){
-            float curr_distance = 0;
-            for(int i=0; i<this._desc.rows(); i++) {
-                curr_distance += abs(this._desc.get(i, 0)[0] - other_desc.get((i + j)%this._desc.rows(), 0)[0]);
-            }
-            if (curr_distance < min_val) {
-                min_val = curr_distance;
-            }
-        }
-
-        return min_val;
+    float distanceFrom(Mat other) {
+        return (float) Core.norm(_desc, other);
     }
 
 }
