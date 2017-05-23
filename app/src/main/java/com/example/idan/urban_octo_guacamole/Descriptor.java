@@ -1,12 +1,19 @@
 package com.example.idan.urban_octo_guacamole;
 
 import android.util.Base64;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfFloat;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static java.lang.Math.abs;
 
 class Descriptor {
     //private variables
@@ -77,8 +84,20 @@ class Descriptor {
         this._desc = desc;
     }
 
-    public float distanceFrom(MatOfFloat other) { // TODO: See this works
-        return (float) Core.norm(_desc, other);
+    float distanceFrom(MatOfFloat other_desc) {
+        float min_val = Float.POSITIVE_INFINITY;
+
+        for(int j = 0; j < this._desc.rows(); j++){
+            float curr_distance = 0;
+            for(int i=0; i<this._desc.rows(); i++) {
+                curr_distance += abs(this._desc.get(i, 0)[0] - other_desc.get((i + j)%this._desc.rows(), 0)[0]);
+            }
+            if (curr_distance < min_val) {
+                min_val = curr_distance;
+            }
+        }
+
+        return min_val;
     }
 
 }
