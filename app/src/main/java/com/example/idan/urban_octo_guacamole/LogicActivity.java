@@ -10,11 +10,10 @@ import android.view.View;
 import android.widget.ImageView;
 
 import org.opencv.android.Utils;
-import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfFloat;
-import org.opencv.imgproc.Imgproc;
+import org.opencv.core.Scalar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -22,13 +21,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import java.util.List;
 
 import static com.example.idan.urban_octo_guacamole.Settings.ENV_SIZE;
+import static com.example.idan.urban_octo_guacamole.Settings.IMAGE_CVTYPE;
+import static com.example.idan.urban_octo_guacamole.Settings.K_NEAREST;
 import static com.example.idan.urban_octo_guacamole.Settings.PATCH_SIZE;
-import static org.opencv.imgcodecs.Imgcodecs.imwrite;
+import static org.opencv.core.Core.add;
+import static org.opencv.core.Core.divide;
+import static org.opencv.core.Core.multiply;
 
 public class LogicActivity extends AppCompatActivity {
 
@@ -51,11 +56,11 @@ public class LogicActivity extends AppCompatActivity {
         setContentView(R.layout.activity_logic);
         databaseAccess = DatabaseAccess.getInstance(this);
         databaseAccess.open();
-
+        // Connect to image view.
         imgView = (ImageView) this.findViewById(R.id.faceImage);
+        //Open image.
         InputStream stream = getResources().openRawResource( R.raw.face22 );
         orgBmp = BitmapFactory.decodeStream(stream);
-        imgView.setImageBitmap(orgBmp);
         imgMat = getMatFromBitmap(orgBmp);
 
         inputHandler = new inputHandler();
@@ -67,25 +72,9 @@ public class LogicActivity extends AppCompatActivity {
 
         Mat depth = createDepthMap(depth_patches);
 
-        InputStream streamRealDepth = getResources().openRawResource( R.raw.face22 );
-        Bitmap orgBmpRealDepth = BitmapFactory.decodeStream(streamRealDepth);
-        Mat imgMatRealDepth = getMatFromBitmap(orgBmpRealDepth);
-        Imgproc.resize(imgMatRealDepth, imgMatRealDepth, depth.size());
-        Imgproc.cvtColor(imgMat, imgMat, Imgproc.COLOR_RGB2GRAY);
-        Log.i("Test", String.format("imgMatRealDepth size %s", imgMatRealDepth.size()));
-        Log.i("Test", String.format("depth size %s", depth.size()));
-        Log.i("Test", String.format("imgMatRealDepth.type() = %s, depth.type() = %s\n are they equal %s", imgMatRealDepth.type(), depth.type(), imgMatRealDepth.type() == depth.type()));
-
         depthbmp = utils.mat2bmp(depth);
 
         imgView.setImageBitmap(depthbmp);
-
-        /////
-//        for (DepthPatch dp: depth_patches) {
-//            Bitmap dpbmp = utils.mat2bmp(dp.getDepthPatch());
-//            imgView.setImageBitmap(dpbmp);
-//        }
-        /////
 
         databaseAccess.close();
     }
@@ -120,29 +109,60 @@ public class LogicActivity extends AppCompatActivity {
 
                 Descriptor min_desc = new Descriptor();
                 float min_dist = MAX_FLOAT_NUM;
+                Map<Descriptor,Float> k_nearest = new HashMap<>();
 
                 // run on all the descriptor and save the one with the smallest distance
                 for (Descriptor db_desc:env_descs) {
                     float dis_res = db_desc.distanceFrom(input_descriptor);
-                    if (dis_res < min_dist) {
-
-                        min_desc.setID(db_desc.getID());
-                        min_desc.setCol(db_desc.getCol());
-                        min_desc.setRow(db_desc.getRow());
-                        min_desc.setDesc(db_desc.getDescriptor());
-
-                        min_dist = dis_res;
-                    }
+                    k_nearest.put(db_desc, dis_res);
                 }
-                // get the patch depth map
-                DepthPatch dp = getDepthPatch(min_desc.getID(), min_desc.getCol(), min_desc.getRow());
-                DepthPatch res_dp = new DepthPatch(-1, input_col, input_row, dp.getDepthPatch());
+                //Sorting All results.
+                k_nearest = sortByValue(k_nearest);
+
+                Mat avg = Mat.zeros(PATCH_SIZE, PATCH_SIZE, CvType.CV_32F);
+                int k_count = 0;
+
+                for(Map.Entry<Descriptor,Float> desc2float : k_nearest.entrySet()){
+                    Descriptor curr_desc = desc2float.getKey();
+                    // get the patch depth map
+                    DepthPatch dp = getDepthPatch(curr_desc.getID(), curr_desc.getCol(), curr_desc.getRow());
+                    Mat float_mat = Mat.zeros(PATCH_SIZE, PATCH_SIZE, CvType.CV_32F);
+                    dp.getDepthPatch().convertTo(float_mat,CvType.CV_32F);
+                    add(float_mat,avg, avg);
+
+                    k_count++;
+                    if (k_count >= K_NEAREST) break;
+                }
+                Scalar s = new Scalar((double)1/Settings.K_NEAREST);
+                multiply(avg,s, avg);
+                avg.convertTo(avg,Settings.IMAGE_CVTYPE);
+                DepthPatch res_dp = new DepthPatch(-1, input_col, input_row, avg);
                 dps.add(res_dp);
-                System.out.println(String.format("done processing %d queries", i++));
+                Log.i("Queries", String.format("done processing %d queries", ++i));
             }
         }
+        Log.i("Queries", "done processing all the queries");
 
         return dps;
+    }
+
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue( Map<K, V> map ){
+        List<Map.Entry<K, V>> list =
+                new LinkedList<Map.Entry<K, V>>( map.entrySet() );
+        Collections.sort( list, new Comparator<Map.Entry<K, V>>()
+        {
+            public int compare( Map.Entry<K, V> o1, Map.Entry<K, V> o2 )
+            {
+                return (o1.getValue()).compareTo( o2.getValue() );
+            }
+        } );
+
+        Map<K, V> result = new LinkedHashMap<K, V>();
+        for (Map.Entry<K, V> entry : list)
+        {
+            result.put( entry.getKey(), entry.getValue() );
+        }
+        return result;
     }
 
     private DepthPatch getDepthPatch(int id, int col, int row) {
@@ -166,7 +186,7 @@ public class LogicActivity extends AppCompatActivity {
     }
 
     private Mat getMatFromBitmap(Bitmap bmp){
-        Mat sourceImage = new Mat(bmp.getWidth(), bmp.getHeight(), Settings.IMAGE_CVTYPE);
+        Mat sourceImage = new Mat(bmp.getWidth(), bmp.getHeight(), CvType.CV_16UC1);
         Utils.bitmapToMat(bmp, sourceImage);
         return sourceImage;
     }
@@ -188,5 +208,16 @@ public class LogicActivity extends AppCompatActivity {
 
     public Comparator<? super DepthPatch> getCompByName() {
         return compByName;
+    }
+
+    public ArrayList<Float> MatOftoList(Mat input_mat) {
+        ArrayList<Float> res_list = new ArrayList<>();
+        for(int col =0; col < input_mat.cols(); col++) {
+            for (int row = 0; row < input_mat.rows(); row++) {
+                res_list.add((float) input_mat.get(row, col)[0]);
+            }
+        }
+
+        return res_list;
     }
 }
