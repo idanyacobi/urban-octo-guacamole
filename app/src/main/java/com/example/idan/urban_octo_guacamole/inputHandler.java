@@ -26,7 +26,7 @@ class inputHandler {
         // base on http://stackoverflow.com/questions/38233753/android-opencv-why-hog-descriptors-are-always-zero
 
         Size winSize = new Size(Settings.WINDOW_SIZE, Settings.WINDOW_SIZE);
-        Size blockSize = new Size(Settings.BLOCK, Settings.BLOCK);
+        Size blockSize = new Size(Settings.BLOCK_SIZE, Settings.BLOCK_SIZE);
         Size cellSize = new Size(Settings.CELL_SIZE, Settings.CELL_SIZE);
         Size winStride = new Size(Settings.WINDOW_SIZE / Settings.STEP_OVERLAP,
                 Settings.WINDOW_SIZE / Settings.STEP_OVERLAP); //50% overlap in the sliding window

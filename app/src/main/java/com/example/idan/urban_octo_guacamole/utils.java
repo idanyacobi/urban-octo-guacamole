@@ -10,12 +10,8 @@ import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-/**
- * Created by idan on 16/05/2017.
- */
-
 public class utils {
-    public static Bitmap mat2bmp(Mat m) {
+    static Bitmap mat2bmp(Mat m) {
         Bitmap bmp = null;
         Mat tmp = new Mat (m.rows(), m.cols(), Settings.IMAGE_CVTYPE, new Scalar(4));
 
