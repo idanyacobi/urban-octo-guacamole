@@ -14,7 +14,7 @@
         app:layout_constraintLeft_toLeftOf="@+id/guideline3"
         app:layout_constraintRight_toLeftOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher" />
+        app:srcCompat="@drawable/selfie" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
@@ -103,7 +103,7 @@
             android:layout_weight="1"
             android:background="@null"
             android:onClick="nextActivity"
-            app:srcCompat="@android:drawable/ic_media_ff" />
+            app:srcCompat="@android:drawable/ic_menu_send" />
 
     </LinearLayout>
 
