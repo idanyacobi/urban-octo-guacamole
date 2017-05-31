@@ -14,6 +14,7 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfFloat;
 import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -41,6 +42,8 @@ public class LogicActivity extends AppCompatActivity {
     private dbHelper dbh;
     private ImageView imgView;
 
+    Mat depth;
+
     private inputHandler inputHandler;
     private Mat imgMat;
     DatabaseAccess databaseAccess;
@@ -49,6 +52,7 @@ public class LogicActivity extends AppCompatActivity {
     Bitmap depthbmp;
     Bitmap orgBmp;
     int i = 0;
+    Imgproc ip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +63,7 @@ public class LogicActivity extends AppCompatActivity {
         // Connect to image view.
         imgView = (ImageView) this.findViewById(R.id.faceImage);
         //Open image.
-        InputStream stream = getResources().openRawResource( R.raw.face56 );
+        InputStream stream = getResources().openRawResource( R.raw.face8 );
         orgBmp = BitmapFactory.decodeStream(stream);
         imgMat = getMatFromBitmap(orgBmp);
 
@@ -70,13 +74,20 @@ public class LogicActivity extends AppCompatActivity {
 
         depth_patches = processDescriptors(img_descriptors);
 
-        Mat depth = createDepthMap(depth_patches);
+        depth = createDepthMap(depth_patches);
 
         depthbmp = utils.mat2bmp(depth);
 
         imgView.setImageBitmap(depthbmp);
 
         databaseAccess.close();
+    }
+
+    public void optimize_output(View view) {
+        ip = new Imgproc();
+        ip.pyrMeanShiftFiltering(depth, depth, 4, 4);
+        Bitmap depthbmp = utils.mat2bmp(depth);
+        imgView.setImageBitmap(depthbmp);
     }
 
     public void showDepthPatch(View view){
