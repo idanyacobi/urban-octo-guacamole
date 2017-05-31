@@ -48,6 +48,8 @@ public class FaceOverlayView extends View {
     }
     final static int FAILURE_DETECT = 0;
     final static int SUCCESS_DETECT = 1;
+
+
     public int setBitmap( Bitmap bitmap ) {
 //        mBitmap = bitmap;
         mBitmap = convert(bitmap, Bitmap.Config.RGB_565);

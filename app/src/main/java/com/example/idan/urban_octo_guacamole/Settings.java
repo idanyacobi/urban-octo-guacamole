@@ -7,7 +7,9 @@ class Settings {
 
     static final int ENV_SIZE = 1;
     static final int IMAGE_CVTYPE = CV_8UC1;
-
+    static final int WINDOW_SIZE = 128;
+    static final int BLOCK_SIZE = 128;
+    static final int CELL_SIZE = 128;
     static final int WIDTH_SIZE = 128;
     static final int HEIGHT_SIZE = 128;
     static final int PATCH_SIZE = 8;
